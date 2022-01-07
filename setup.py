@@ -3,7 +3,7 @@ setup(
     name='theovib',
     packages=find_packages(include=['theovib']),
     version='0.1.0',
-    description='',
+    description='a package for molecular vibrations analysis',
     author='L. J. Duarte',
     license='MIT',
 )

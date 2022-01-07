@@ -1,2 +1,2 @@
-# CCTDP_pkg
- package for cctdp analysis
+# Theovib
+ package for molecular vibration analysis
