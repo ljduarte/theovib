@@ -64,7 +64,7 @@ def angle(geo, a, b, c):
     b_row[3*c-1] = u2[2]
     b_row[3*b-3] = -(u1[0]+u2[0])
     b_row[3*b-2] = -(u1[1]+u2[1])
-    b_row[3*b-1] = -(u1[2]+u2[ 2])
+    b_row[3*b-1] = -(u1[2]+u2[2])
 
     return b_row
 
@@ -87,7 +87,6 @@ def torsion(geo, a, b, c, d):
     n = len(a)
     m = len(d)
     b_row = np.zeros(3*len(geo))
-    
     bc = geo[c-1]-geo[b-1]
     r_bc = np.linalg.norm(bc)
     bc = bc/r_bc
@@ -106,7 +105,6 @@ def torsion(geo, a, b, c, d):
         vb = vb - (r_bc-r1*(np.dot(v1, bc)))*ua/r_bc
         vc = vc - np.dot(cb, v1)*r1*ua/(r_bc)
 
-
     for d in d:
         v2 = geo[d-1]-geo[c-1]
         r2 = np.linalg.norm(v2)
@@ -115,8 +113,8 @@ def torsion(geo, a, b, c, d):
         b_row[3*d-3] = ud[0]
         b_row[3*d-2] = ud[1]
         b_row[3*d-1] = ud[2]
-        vb = vb - np.dot(bc,v2)*r2*ud/(r_bc)
-        vc = vc - (r_bc-r2*(np.dot(v2 , cb)))*ud/r_bc
+        vb = vb - np.dot(bc, v2)*r2*ud/(r_bc)
+        vc = vc - (r_bc-r2*(np.dot(v2, cb)))*ud/r_bc
 
     b_row[3*b-3] = vb[0]
     b_row[3*b-2] = vb[1]
@@ -126,6 +124,7 @@ def torsion(geo, a, b, c, d):
     b_row[3*c-1] = vc[2]
 
     return b_row
+
 
 def wag(geo, a, b, c, d):
     """Calculates the out-of plane wag for the plane defined by atoms a, c and d.
@@ -143,7 +142,6 @@ def wag(geo, a, b, c, d):
     """
 
     b_row = np.zeros(3*len(geo))
-
     vab = geo[a-1]-geo[b-1]
     rab = np.linalg.norm(vab)
     eab = vab/rab
@@ -157,8 +155,10 @@ def wag(geo, a, b, c, d):
     normal = np.cross(eac, ead)/np.linalg.norm(np.cross(eac, ead))
 
     ub = normal/rab
-    uc = (normal/rac) * (np.linalg.norm(np.cross(eab, ead))/ np.linalg.norm(np.cross(eac, ead)))
-    ud = (normal/rad) * (np.linalg.norm(np.cross(eab, eac))/ np.linalg.norm(np.cross(eac, ead)))
+    uc = (normal/rac) * (np.linalg.norm(np.cross(eab, ead)) /
+                         np.linalg.norm(np.cross(eac, ead)))
+    ud = (normal/rad) * (np.linalg.norm(np.cross(eab, eac)) /
+                         np.linalg.norm(np.cross(eac, ead)))
     ua = -ub-uc-ud
 
     b_row[3*a-3] = ua[0]
@@ -176,7 +176,61 @@ def wag(geo, a, b, c, d):
 
     return b_row
 
-def linear_angle(geo, a, b, c, deg=False):
-    
 
-    pass
+def linear(geo, a, b, c, deg=False):
+    """calculates angular bend for linear molecules
+
+    :param geo: molecular geometry
+    :type geo: 2D array
+    :param a: label of atom a
+    :type a: int
+    :param b: label of central atom b
+    :type b: int
+    :param c: label of atom c
+    :type c: int
+    :param deg: set deg=True if degenerate coordinate, defaults to False
+    :type deg: bool, optional
+    """
+    b_row = np.zeros(3*len(geo))
+    v1 = geo[a-1]-geo[b-1]
+    r1 = np.linalg.norm(v1)
+    v2 = geo[c-1]-geo[b-1]
+    r2 = np.linalg.norm(v2)
+
+    u = np.array([1, 1, -(v1[0]+v1[1])/v1[2]])
+    u = u/np.linalg.norm(u)     
+
+    ua = u/r1
+    uc = u/r2
+    ub = -ua-uc
+    print(ua)
+
+    b_row[3*a-3] = ua[0]
+    b_row[3*a-2] = ua[1]
+    b_row[3*a-1] = ua[2]
+    b_row[3*b-3] = ub[0]
+    b_row[3*b-2] = ub[1]
+    b_row[3*b-1] = ub[2]
+    b_row[3*c-3] = uc[0]
+    b_row[3*c-2] = uc[1]
+    b_row[3*c-1] = uc[2]
+
+    if deg == True:
+        b_row = np.array([b_row, np.zeros(3*len(geo))])
+        v = np.cross(u, v1)
+        v = v/np.linalg.norm(v)
+
+        va = v/r1
+        vc = v/r2
+        vb = -va-vc
+        b_row[1][3*a-3] = va[0]
+        b_row[1][3*a-2] = va[1]
+        b_row[1][3*a-1] = va[2]
+        b_row[1][3*b-3] = vb[0]
+        b_row[1][3*b-2] = vb[1]
+        b_row[1][3*b-1] = vb[2]
+        b_row[1][3*c-3] = vc[0]
+        b_row[1][3*c-2] = vc[1]
+        b_row[1][3*c-1] = vc[2]
+
+    return b_row
