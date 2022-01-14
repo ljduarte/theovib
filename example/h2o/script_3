@@ -1,0 +1,12 @@
+#!/bin/bash
+A=' 87_B.com 87_C.com 87_D.com 88_A.com 88_B.com EQ.com '
+B=' 87_B.wfn 87_C.wfn 87_D.wfn 88_A.wfn 88_B.wfn EQ.wfn '
+for a in $A 
+ do 
+/home/bruns/programas/chemistry/gaussian/g09/g09 $a 
+done 
+sed -i 's/NUCLEI/NUCLEI   B3LYP/g' *.wfn
+for b in $B 
+ do 
+/usr/local/AIMAll/aimqb.ish -nogui -nproc=8 -encomp=4 $b 
+done 

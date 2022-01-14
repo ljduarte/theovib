@@ -1,3 +1,6 @@
+from numpy import array
+
+
 def get_IQA(atomicfiles, atoms):
     """
     INPUT: _atomicfiles folder and list of atoms
@@ -27,9 +30,9 @@ def get_IQA(atomicfiles, atoms):
                 Vcl.append(float(line.split()[5]))
             if "VX_IQA(A,B)" in line:
                 Vxc.append(float(line.split()[5]))
-    Eintra = np.array(Eintra)
-    Vcl = np.array(Vcl)
-    Vxc = np.array(Vxc)
+    Eintra = array(Eintra)
+    Vcl = array(Vcl)
+    Vxc = array(Vxc)
     return Eintra, Vcl, Vxc
 
 

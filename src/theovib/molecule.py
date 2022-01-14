@@ -1,12 +1,27 @@
 """Define the "Molecule" class.
 """
 #import os
-
+import numpy as np 
 
 class Molecule:
     def __init__(self, atoms, positions):
         self.atoms = atoms
         self.positions = positions
+        self.b_matrix = None
+        self.hessian = None
+        self.iqa_hessian = None
+        self.int = None
+        self.freq = None
+        self.iqa_freq = None
+        self.energy = None
+        self.iqa_energy = None
+        self.normal_coordinates = None
+        self.iqa_terms = None
+        self.c_tensors = None
+        self.ct_tensors = None
+        self.dp_tensors = None
+        self.internal_hessian = None
+        self.iqa_forces = None
         #self.gaussian_path = gaussian_path
         #self.aimall_path = aimall_path
 
@@ -20,8 +35,8 @@ class Molecule:
         for line in f:
             if len(line.split()) == 4 and all(i not in line for i in ['#', '%']):
                 atoms.append(line.split()[0])
-                positions.append([float(line.split()[1]), float(
-                    line.split()[2]), float(line.split()[3])])
+                positions.append(np.array([float(line.split()[1]), float(
+                    line.split()[2]), float(line.split()[3])]))
         return(cls(atoms, positions))
 
 #   def opt(self, nproc, mem,  method, base, charge, mult):

@@ -1,8 +1,8 @@
 import unittest
 
 from numpy import linalg
-from internal import *
-from molecule import Molecule
+from theovib.internal import *
+from theovib.molecule import Molecule
 
 water = Molecule(['O', 'H', 'H'], np.array([[0.000000,  0.000000,  0.004316],
                                             [0.000000, -0.763369, -0.580667],

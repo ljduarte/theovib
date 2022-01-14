@@ -1,0 +1,12 @@
+#!/bin/bash
+A=' 61_D.com 62_A.com 62_B.com 62_C.com 62_D.com 63_A.com 63_B.com 63_C.com 63_D.com 64_A.com 64_B.com 64_C.com 64_D.com 65_A.com 65_B.com 65_C.com 65_D.com 66_A.com 66_B.com 70_A.com 70_B.com 70_C.com 70_D.com 71_A.com 71_B.com 71_C.com 71_D.com 72_A.com 72_B.com 72_C.com 72_D.com 73_A.com 73_B.com 73_C.com 73_D.com 74_A.com 74_B.com 74_C.com 74_D.com 75_A.com 75_B.com 75_C.com 75_D.com 76_A.com 76_B.com 76_C.com 76_D.com 77_A.com 77_B.com 80_A.com 80_B.com 80_C.com 80_D.com 81_A.com 81_B.com 81_C.com 81_D.com 82_A.com 82_B.com 82_C.com 82_D.com 83_A.com 83_B.com 83_C.com 83_D.com 84_A.com 84_B.com 84_C.com 84_D.com 85_A.com 85_B.com 85_C.com 85_D.com 86_A.com 86_B.com 86_C.com 86_D.com 87_A.com '
+B=' 61_D.wfn 62_A.wfn 62_B.wfn 62_C.wfn 62_D.wfn 63_A.wfn 63_B.wfn 63_C.wfn 63_D.wfn 64_A.wfn 64_B.wfn 64_C.wfn 64_D.wfn 65_A.wfn 65_B.wfn 65_C.wfn 65_D.wfn 66_A.wfn 66_B.wfn 70_A.wfn 70_B.wfn 70_C.wfn 70_D.wfn 71_A.wfn 71_B.wfn 71_C.wfn 71_D.wfn 72_A.wfn 72_B.wfn 72_C.wfn 72_D.wfn 73_A.wfn 73_B.wfn 73_C.wfn 73_D.wfn 74_A.wfn 74_B.wfn 74_C.wfn 74_D.wfn 75_A.wfn 75_B.wfn 75_C.wfn 75_D.wfn 76_A.wfn 76_B.wfn 76_C.wfn 76_D.wfn 77_A.wfn 77_B.wfn 80_A.wfn 80_B.wfn 80_C.wfn 80_D.wfn 81_A.wfn 81_B.wfn 81_C.wfn 81_D.wfn 82_A.wfn 82_B.wfn 82_C.wfn 82_D.wfn 83_A.wfn 83_B.wfn 83_C.wfn 83_D.wfn 84_A.wfn 84_B.wfn 84_C.wfn 84_D.wfn 85_A.wfn 85_B.wfn 85_C.wfn 85_D.wfn 86_A.wfn 86_B.wfn 86_C.wfn 86_D.wfn 87_A.wfn '
+for a in $A 
+ do 
+/home/bruns/programas/chemistry/gaussian/g09/g09 $a 
+done 
+sed -i 's/NUCLEI/NUCLEI   B3LYP/g' *.wfn
+for b in $B 
+ do 
+/usr/local/AIMAll/aimqb.ish -nogui -nproc=8 -encomp=4 $b 
+done 

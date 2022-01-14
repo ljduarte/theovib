@@ -1,0 +1,588 @@
+ AIMInt (Version 17.11.14, Professional)
+ Portions Copyright (c) 1997-2017 by Todd A. Keith
+ AIMInt is a component of the AIMAll package ( http://aim.tkgristmill.com )
+
+ TP:  64-bit Linux
+
+ AIMInt is a heavily modified and extended version of the PROAIMV program
+ developed by members of R.F.W. Bader's research group
+
+ Much of the Quantum Theory of Atoms in Molecules (QTAIM) is described in the book:
+   "Atoms in Molecules - A Quantum Theory"
+   R.F.W. Bader, Oxford University Press, Oxford, 1990
+
+ For additional references see:  http://aim.tkgristmill.com/references.html
+
+ Current Directory:  /home/bruns/IQA_vib/run/h2o005
+
+ Inp File:  71_C_atomicfiles/h2.inp
+ Wfn File:  71_C.wfn
+ Out File:  71_C_atomicfiles/h2.int
+
+ Wfn Title:   71                                                                            
+ Job Title:   71                                                                            
+
+ The value of -V/T from the wfn file =  2.0044715400E+00
+ The molecular energy from the wfn file = -7.6457721969E+01
+ The Proaim surface algorithm will be used.
+ The critical points in the atomic surface:
+  1 BCP (Bond)  -1.5295771019E-10  -1.1057484523E+00  -8.6179795740E-01 O1      
+ Optional parameters read from input.
+ 
+Model:  Restricted B3LYP
+ 
+ Restricted, closed-shell, single-determinant wavefunction.
+   Number of electrons (from MO Occs)                   =          10.0000000000
+   Number of Alpha electrons (from MO Occs)             =           5.0000000000
+   Number of Beta electrons (from MO Occs)              =           5.0000000000
+   Number of electron pairs (N*(N-1)/2)                 =          45.0000000000
+   Number of electron pairs (from Muller 2EDM)          =          45.0000000000
+ 
+ Integration is over atom H2      
+ MPts_ESP = 132
+ Number of processors used for job =    8
+ Dynamic cutoffs will be used throughout.
+ The cutoff value to be used is 1.00E-13
+ Pre-integration cutoffs will not be used.
+ Number of primitives read from wavefunction =    126
+ Number of unique primitives before cutoffs is    121
+ The number of contracted basis functions to be used outside Beta sphere is      0(MaxLen=     0)
+ The number of uncontracted basis functions to be used outside Beta sphere is    121
+ The number of contracted basis functions to be used inside Beta sphere is      0(MaxLen=     0)
+ The number of uncontracted basis functions to be used inside Beta sphere is    121
+ Time spent trimming wavefunction =        0 sec
+ Using MO basis.
+ Number of recalcs:  BIM = 0, OAQ = 0
+ Total memory allocated for AIMInt =      120.332 Megabytes
+ Doing Beta sphere integration ...
+ The radius of the Beta sphere is  3.1097794690E-01
+ The Beta sphere integration will be done in   1 shells.
+ Using adaptive number of radial points for Beta Sphere shells.
+ Using adaptive number of angular points for Beta Sphere shells.
+ The outer radius of shell   1 is  3.1097794690E-01 with adaptive number of radial points.
+ Using    110 Lebedev grid points for angular integration of shell   1
+ Shell   1 of Beta sphere integration is done.
+ Beta sphere integration is done.
+ Using Proaim surface algorithm.
+ Will search for first through fifth intersections in Proaim surface algorithm.
+ Using   83 initial gradrho trajectories per interatomic surface.
+ Maximum path length of a gradrho surface trajectory =  1.5000000000E+01
+ Using  600 triangulation points per gradrho surface trajectory.
+ Distance between adjacent triangulation points on gradrho surface trajectories =  2.5000000000E-02
+ Maximum distance between adjacent surface trajectories =  3.0000000000E-01
+ Density cutoff for "infinite" surface trajectories =  1.0000000000E-10
+ Surface trajectory micro insertion limit =  167
+ Number of 0th order integration rays =    373
+ Number of 1st order integration rays =   1425
+ Number of 2nd order integration rays =      2
+ Number of 3rd order integration rays =      0
+ Number of 4th order integration rays =      0
+ Number of 5th order integration rays =      0
+ Surface trajectory micro insertion limit reached     0 times for interatomic surface   1
+ Number of inserted trajectories =     85 for interatomic surface   1
+ Maximum actual density at "infinite" end of a surface trajectory =  1.0323973959E-10
+ Maximum path length at "infinite" end of a surface trajectory =  1.2575000000E+01
+ Maximum distance from nucleus at "infinite" end of a surface trajectory =  1.2080802638E+01
+ Minimum path length at "infinite" end of a surface trajectory =  1.0275000000E+01
+ Minimum distance from nucleus at "infinite" end of a surface trajectory =  8.7694619599E+00
+ Minimum distance from nucleus to IAS =  4.1095319413E-01
+ Maximum actual density at an "EZG" point of a surface trajectory =  0.0000000000E+00
+ Total number of surface trajectory walks =    170
+ The total number of inserted trajectories =    85
+ Atomic surface calculation is done.
+ Doing integration outside of Beta sphere ...
+ Integrating out to  1.3000000000E+01 from the nucleus for infinite rays.
+ Electron density isosurface value for volume 1 =  1.0000000000E-03
+ Electron density isosurface value for volume 2 =  2.0000000000E-03
+ Electron density isosurface value for volume 3 =  4.0000000000E-04
+ Using   1800 GS grid points for angular integration outside Beta sphere.
+   Rotating grid:     0.000000    0.000000    0.000000
+ Using Gauss-Legendre method for radial integration outside Beta sphere.
+ Using adaptive number of radial points outside of Beta sphere.
+ Integration outside of Beta sphere is done.
+Calculating properties of atomic isodensity surfaces
+
+ Error measures of the basin integration:
+           (1/4)<Div(GRho(r))>     = -1.7906624541E-05
+           (1/4)<Div(|r|GRho(r))>  = -1.5481304477E-05
+           (1/4)<Div(GRho(r)/|r|)> = -2.9440246443E-05
+
+ Results of the basin integration:
+          N =  4.5725196327E-01   q =  5.4274803673E-01 = Net Charge
+          G =  3.7714300694E-01
+          K =  3.7716091356E-01   K_Scaled = -3.7884740367E-01 = (1+V(Mol)/T(Mol))*K
+          L =  1.7906624541E-05
+     WeizKE =  3.2177144605E-01
+       TFKE =  2.5052981475E-01
+      <|L|> ~  4.4211766407E-01   <|L+|> ~  2.2106778535E-01  <|L-|> ~ -2.2104987872E-01
+          I =  2.4666260785E-01
+ <Rho/r**2> =  2.1723382064E+00
+    <Rho/r> =  7.3182432288E-01
+    <Rho*r> =  4.4119333892E-01
+ <Rho*r**2> =  6.1109095433E-01
+ <Rho*r**4> =  2.7594793458E+00
+     GR(-2) = -1.4537455016E+00
+     GR(-1) = -9.8175592798E-01
+        GR0 = -9.9052275735E-01
+        GR1 = -1.3876879927E+00
+        GR2 = -2.5668449343E+00
+       VenO = -7.3182432288E-01   VenO_Scaled = -7.3345686376E-01 = 2*(1+T(Mol)/V(Mol))*VenO
+       VenT = -2.4802313798E+00   VenT_Scaled = -2.4857642366E+00 = 2*(1+T(Mol)/V(Mol))*VenT
+   Dipole X =  5.7174576600E-06   5.7174576600E-06   0.0000000000E+00   5.7174576600E-06
+   Dipole Y =  1.2973811399E-01   7.8935075165E-01  -1.4425583500E+00  -6.5320759835E-01
+   Dipole Z =  1.1052664001E-01   6.1226995090E-01  -1.0973016000E+00  -4.8503164910E-01
+   |Dipole| =  1.7043507974E-01
+ 
+ Atomic Traceless Quadrupole Moment Tensor Q:
+        QXX =  1.0537024187E-02
+        QXY =  8.4015875854E-07
+        QXZ = -3.2988915083E-05
+        QYY =  3.0757616402E-02
+        QYZ = -2.7393665893E-02
+        QZZ = -4.1294640589E-02
+ 
+ Eigenvalues of Atomic Traceless Quadrupole Moment Tensor:
+  -5.0526619536E-02   1.0537035558E-02   3.9989583978E-02
+ 
+ Eigenvectors of Atomic Traceless Quadrupole Moment Tensor:
+   5.0755329836E-04   9.9999979718E-01   3.8474032423E-04
+   3.1936239607E-01  -5.2668598521E-04   9.4763251452E-01
+   9.4763252496E-01  -3.5810241656E-04  -3.1936259862E-01
+ 
+Ehrenfest Force:  Using basin integral -<DivStress>
+   9.1814233094E-06   5.6584147595E-02   4.8246552380E-02
+ 
+Total Virial                    = -7.5430392050E-01 (-<TraceStress>)
+Basin Virial (Nuclear Origin)   = -7.1535230432E-01 (-<r * DivStress>)
+Surface Virial (Nuclear Origin) = -3.8951616178E-02 (-<TraceStress> + <r * DivStress>)
+ 
+ Electrostatic Forces on Nuclei by Atomic Electron Distribution:
+     FrcAAX = -9.9721020054E-06
+     FrcAAY =  1.0981635180E-02
+     FrcAAZ = -7.2363009216E-03
+     FrcBAX = -2.1262398745E-06
+     FrcBAY = -6.1260053303E-01
+     FrcBAZ = -4.1665916256E-01
+ 
+ Electrostatic Energy and Force between Total Atomic Charge Distribution and Nuclei:
+   1     2.6243415786E+00 -1.9537936457E-06  1.2463798141E+00  8.9026139728E-01
+   2    -7.3182432288E-01 -9.9721020052E-06  1.0981635180E-02 -7.2363009216E-03
+   3     2.1104457541E-01 -1.7244622883E-07  8.1293453729E-02 -3.8095256476E-03
+ Total   2.1035618312E+00 -1.2098341880E-05  1.3386549030E+00  8.7921557071E-01
+ 
+ Electrostatic Energy and Force between Atomic Electron Distribution and Nuclei:
+   1    -1.6011096593E+00 -1.9537936457E-06 -5.6548501711E-01 -4.1284963691E-01
+   2    -7.3182432288E-01 -9.9721020052E-06  1.0981635180E-02 -7.2363009216E-03
+   3    -1.4729739764E-01 -1.7244622883E-07 -4.7115515919E-02 -3.8095256476E-03
+ Total  -2.4802313798E+00 -1.2098341880E-05 -6.0161889785E-01 -4.2389546348E-01
+ 
+ Electrostatic Energy and Force between Atomic Nucleus and Nuclei:
+   1     4.2254512380E+00  0.0000000000E+00  1.8118648312E+00  1.3031110342E+00
+   2     0.0000000000E+00  0.0000000000E+00  0.0000000000E+00  0.0000000000E+00
+   3     3.5834197305E-01  0.0000000000E+00  1.2840896965E-01  0.0000000000E+00
+ Total   4.5837932110E+00  0.0000000000E+00  1.9402738008E+00  1.3031110342E+00
+ 
+  <Rho*L>      =  5.3291958322E-02
+  Vol1(0.001)  =  2.5508456575E+01
+  Vol2(0.002)  =  1.8642714965E+01
+  Vol3(0.0004) =  3.6488303679E+01
+  N(Vol1)      =  4.4281849860E-01
+  N(Vol2)      =  4.3305276402E-01
+  N(Vol3)      =  4.4987144822E-01
+  d(Vol1)      =  1.7359674322E-02 = N(Vol1)/Vol1
+  d(Vol2)      =  2.3229061048E-02 = N(Vol2)/Vol2
+  d(Vol3)      =  1.2329196012E-02 = N(Vol3)/Vol3
+ Minimum distance from nucleus to 0.001 electron density isosurface in atom ~  2.30
+ Minimum distance from nucleus to 0.002 electron density isosurface in atom ~  2.02
+ Minimum distance from nucleus to 0.0004 electron density isosurface in atom ~  2.71
+ Maximum distance reached from nucleus =  1.2998742304E+01
+ Integration volume =  2.0241052734E+03
+ Maximum electron density at an "infinite" integration point ~  3.7733282658E-11
+ 
+Basin Integral of GradRho =  9.5059245265E-06  5.4293468836E-01  3.7723153279E-01
+ 
+ Cartesian Moments of the Electronic Charge Density Distribution (Nuclear Origin):
+ --------------------------------------------------------------------------------
+ -<Rho>       =     -4.5725196327E-01
+ -<Rho*x>     =      5.7174576600E-06
+ -<Rho*y>     =      1.2973811399E-01
+ -<Rho*z>     =      1.1052664001E-01
+ -<Rho*xx>    =     -2.0018464338E-01
+ -<Rho*xy>    =      2.8005291950E-07
+ -<Rho*xz>    =     -1.0996305028E-05
+ -<Rho*yy>    =     -1.9344444598E-01
+ -<Rho*yz>    =     -9.1312219644E-03
+ -<Rho*zz>    =     -2.1746186497E-01
+ -<Rho*xxx>   =      6.2520830395E-07
+ -<Rho*xxy>   =      1.2586725193E-01
+ -<Rho*xxz>   =      1.0438929184E-01
+ -<Rho*xyy>   =     -8.3164198308E-07
+ -<Rho*xyz>   =      1.0494081335E-06
+ -<Rho*xzz>   =      2.4844961291E-05
+ -<Rho*yyy>   =      2.7110405653E-01
+ -<Rho*yyz>   =      4.2185347072E-02
+ -<Rho*yzz>   =      8.8750428950E-02
+ -<Rho*zzz>   =      2.8491423933E-01
+ -<Rho*xxxx>  =     -4.1030315920E-01
+ -<Rho*xxxy>  =      2.4905100372E-06
+ -<Rho*xxxz>  =     -7.6675464084E-06
+ -<Rho*xxyy>  =     -1.9461245841E-01
+ -<Rho*xxyz>  =     -5.8499723337E-02
+ -<Rho*xxzz>  =     -1.9289288336E-01
+ -<Rho*xyyy>  =      4.0011241767E-06
+ -<Rho*xyyz>  =     -1.4995019043E-06
+ -<Rho*xyzz>  =     -2.4047599372E-06
+ -<Rho*xzzz>  =     -7.0852836285E-05
+ -<Rho*yyyy>  =     -5.6577642117E-01
+ -<Rho*yyyz>  =     -5.7055719861E-02
+ -<Rho*yyzz>  =     -1.6499436373E-01
+ -<Rho*yzzz>  =     -1.0833700145E-01
+ -<Rho*zzzz>  =     -6.7840035446E-01
+ -<Rho*xxxxx> =      1.9694560382E-05
+ -<Rho*xxxxy> =      4.4541806177E-01
+ -<Rho*xxxxz> =      3.6409950766E-01
+ -<Rho*xxxyy> =     -6.5595871832E-06
+ -<Rho*xxxyz> =      9.9039678688E-06
+ -<Rho*xxxzz> =      1.0735294589E-05
+ -<Rho*xxyyy> =      3.8435302343E-01
+ -<Rho*xxyyz> =      1.0217987185E-01
+ -<Rho*xxyzz> =      1.5039421795E-01
+ -<Rho*xxzzz> =      3.7217213890E-01
+ -<Rho*xyyyy> =     -2.3341875273E-05
+ -<Rho*xyyyz> =      1.2060795954E-05
+ -<Rho*xyyzz> =     -3.1620200845E-06
+ -<Rho*xyzzz> =      4.7827581412E-06
+ -<Rho*xzzzz> =      2.2915822619E-04
+ -<Rho*yyyyy> =      1.4389622248E+00
+ -<Rho*yyyyz> =      1.5051576262E-01
+ -<Rho*yyyzz> =      3.0100907742E-01
+ -<Rho*yyzzz> =      2.2940909852E-01
+ -<Rho*yzzzz> =      3.7252126464E-01
+ -<Rho*zzzzz> =      1.7904124991E+00
+ 
+ Real Spherical Harmonic Moments Q[l,|m|,?] of the Electronic Charge Density Distribution (Nuclear Origin):
+   Condon-Shortly phase, (-1)**|m|, included
+   Normalization factor, SqRt((2*l+1)/(4*pi)), not included
+ ---------------------------------------------------------------------------------------------------------
+ Q[0,0]         =   -4.5725196327E-01
+ Q[1,0]         =    1.1052664001E-01
+ Q[1,1,c]       =    5.7174576600E-06
+ Q[1,1,s]       =    1.2973811399E-01
+ Q[2,0]         =   -2.0647320294E-02
+ Q[2,1,c]       =   -1.9046159003E-05
+ Q[2,1,s]       =   -1.5815740378E-02
+ Q[2,2,c]       =   -5.8371821791E-03
+ Q[2,2,s]       =    4.8506588535E-07
+ Q[3,0]         =    6.5052280966E-02
+ Q[3,1,c]       =    6.0983892137E-05
+ Q[3,1,s]       =   -2.5701021685E-02
+ Q[3,2,c]       =    1.2045742107E-01
+ Q[3,2,s]       =    4.0643402245E-06
+ Q[3,3,c]       =    2.4666827114E-06
+ Q[3,3,s]       =    8.4193823806E-02
+ Q[4,0]         =   -1.1672779965E-01
+ Q[4,1,c]       =   -2.0231477728E-04
+ Q[4,1,s]       =   -6.8527882044E-02
+ Q[4,2,c]       =   -1.8048667514E-01
+ Q[4,2,s]       =   -2.3389487761E-05
+ Q[4,3,c]       =   -6.6285241813E-06
+ Q[4,3,s]       =   -2.4774225036E-01
+ Q[4,4,c]       =    1.4168653906E-01
+ Q[4,4,s]       =   -4.4684568854E-06
+ Q[5,0]         =    1.3058446326E-01
+ Q[5,1,c]       =    8.3541220293E-04
+ Q[5,1,s]       =    1.0477238416E-01
+ Q[5,2,c]       =    1.8429739299E-01
+ Q[5,2,s]       =   -6.3527239544E-05
+ Q[5,3,c]       =    3.0816007558E-05
+ Q[5,3,s]       =    2.7996244811E-01
+ Q[5,4,c]       =   -2.1844524302E-01
+ Q[5,4,s]       =   -1.9139950550E-05
+ Q[5,5,c]       =   -2.2042298339E-05
+ Q[5,5,s]       =   -1.2451139053E-01
+ 
+ The Atomic Overlap Matrix:
+ 
+ Restricted, closed-shell, single-determinant wavefunction.
+ 
+  0.1003742578
+  0.0642313491  0.0493168204
+ -0.0650858209 -0.0437846903  0.0515429017
+ -0.0468700615 -0.0327268410  0.0288677752  0.0251568431
+ -0.0138357024 -0.0102096160  0.0090070082  0.0065850172  0.0022351586
+
+ Electronic Localization Properties from Atomic Overlap Matrix (see "2EDM Note"):
+ -------------------------------------------------------------------------------
+ Alpha electrons (NAlpha)                      =  2.2862598163E-01
+ Beta electrons (NBeta)                        =  2.2862598163E-01
+ Total electrons (N)                           =  4.5725196327E-01
+ Alpha Fermi correlation (FOOAlpha)            = -4.5402230227E-02
+ Beta Fermi correlation (FOOBeta)              = -4.5402230227E-02
+ Total Fermi correlation (FOO)                 = -9.0804460453E-02
+ Alpha fluctuation (FLAlpha)                   =  1.8322375141E-01
+ Beta fluctuation (FLBeta)                     =  1.8322375141E-01
+ Total fluctuation (FL)                        =  3.6644750281E-01
+ Alpha localization index (LIAlpha)            =  4.5402230227E-02
+ Beta localization index (LIBeta)              =  4.5402230227E-02
+ Total localization index (LI)                 =  9.0804460453E-02
+ Alpha % localization (%LocAlpha)              =  1.9858736047E+01 ( 9.9293680233E+00)
+ Beta % localization (%LocBeta)                =  1.9858736047E+01 ( 9.9293680233E+00)
+ Total % localization (%Loc)                   =  1.9858736047E+01
+ Alpha delocalization index (DIAlpha(A,A')/2)  =  1.8322375141E-01
+ Beta delocalization index (DIBeta(A,A')/2)    =  1.8322375141E-01
+ Total delocalization index (DI(A,A')/2)       =  3.6644750281E-01
+ Alpha % delocalization (%DelocAlpha)          =  8.0141263953E+01 ( 4.0070631977E+01)
+ Beta % delocalization (%DelocBeta)            =  8.0141263953E+01 ( 4.0070631977E+01)
+ Total % delocalization (%Deloc)               =  8.0141263953E+01
+ D2(A,A)                                       =  5.9137448729E-02
+ D2(A,A')                                      =  1.9984963860E+00
+ D2(A,Mol)                                     =  2.0576338347E+00
+ 
+ Electronic Spin Properties:
+ --------------------------
+ N_alpha                  =  2.2862598163E-01
+ N_beta                   =  2.2862598163E-01
+ N_total                  =  4.5725196327E-01
+ N_spin                   =  0.0000000000E+00
+ Mu_Intra_X_alpha         =  2.8587288300E-06
+ Mu_Intra_X_beta          =  2.8587288300E-06
+ Mu_Intra_X_total         =  5.7174576600E-06
+ Mu_Intra_X_spin          =  0.0000000000E+00
+ Mu_Intra_Y_alpha         =  6.4869056995E-02
+ Mu_Intra_Y_beta          =  6.4869056995E-02
+ Mu_Intra_Y_total         =  1.2973811399E-01
+ Mu_Intra_Y_spin          =  0.0000000000E+00
+ Mu_Intra_Z_alpha         =  5.5263320003E-02
+ Mu_Intra_Z_beta          =  5.5263320003E-02
+ Mu_Intra_Z_total         =  1.1052664001E-01
+ Mu_Intra_Z_spin          =  0.0000000000E+00
+ |Mu_Intra_alpha|         =  8.5217539869E-02
+ |Mu_Intra_beta|          =  8.5217539869E-02
+ |Mu_Intra_total|         =  1.7043507974E-01
+ |Mu_Intra_spin|          =  0.0000000000E+00
+ G_alpha                  =  1.8857150347E-01
+ G_beta                   =  1.8857150347E-01
+ G_total                  =  3.7714300694E-01
+ G_spin                   =  0.0000000000E+00
+ K_alpha                  =  1.8858045678E-01
+ K_beta                   =  1.8858045678E-01
+ K_total                  =  3.7716091356E-01
+ K_spin                   =  0.0000000000E+00
+ L_alpha                  =  8.9533122703E-06
+ L_beta                   =  8.9533122703E-06
+ L_total                  =  1.7906624541E-05
+ L_spin                   =  0.0000000000E+00
+ 
+Interatomic Surface Properties:
+------------------------------
+Interatomic Surface   1:  H2 O1            
+     Area(0.001)                       =  2.3087559473E+01
+     Area(0.002)                       =  1.8538166564E+01
+     Area(0.0004)                      =  2.9660138848E+01
+     Full Integration Area             =  3.7833424699E+02
+     Surface Integral of Rho(r)        =  7.2641447346E-01
+     Flux of GradRho                   = -9.5851202491E-05
+     Ehrenfest Force:
+     2.0669820456E-06   5.6652266322E-02   4.8268344727E-02
+     Surface Virial (Nuclear Origin)   = -3.8930505219E-02
+     Surface Integral of G(r)          =  5.2628146940E-01
+     Surface Integral of K(r)          =  4.6430893760E-01
+     Surface Integral of L(r)          = -6.1972531801E-02
+     Surface Integral of DelSqRho(r)   =  2.4789012721E-01
+     Surface Integral of V(r)          = -9.9059040699E-01
+Interatomic Surfaces Total
+     Area(0.001)                       =  2.3087559473E+01
+     Area(0.002)                       =  1.8538166564E+01
+     Area(0.0004)                      =  2.9660138848E+01
+     Full Integration Area             =  3.7833424699E+02
+     Surface Integral of Rho(r)        =  7.2641447346E-01
+     Flux of GradRho                   = -9.5851202491E-05
+     Ehrenfest Force:
+     2.0669820456E-06   5.6652266322E-02   4.8268344727E-02
+     Surface Virial (Nuclear Origin)   = -3.8930505219E-02
+     Surface Integral of G(r)          =  5.2628146940E-01
+     Surface Integral of K(r)          =  4.6430893760E-01
+     Surface Integral of L(r)          = -6.1972531801E-02
+     Surface Integral of DelSqRho(r)   =  2.4789012721E-01
+     Surface Integral of V(r)          = -9.9059040699E-01
+     Validation                        =  3.8124222874E-01   3.8123313245E-01
+
+0.001 Atomic IsoDensity Surface Properties:
+------------------------------------------
+Area                              =  2.5295878603E+01
+Surface Integral of ESP           =  1.2632300687E+00
+Maximum ESP                       =  6.9942509699E-02
+Minimum ESP                       =  2.2744037074E-02
+Average ESP                       =  4.9938177221E-02
+Mean Absolute Deviation of ESP    =  1.0221228193E-02
+Variance of ESP                   =  1.4739972666E-04
+Surface Integral of |ESP|         =  1.2632300687E+00
+Surface Integral of ESP*ESP       =  6.6812012631E-02
+Area_ESP+                         =  2.5295878603E+01
+Surface Integral of ESP+          =  1.2632300687E+00
+Maximum ESP+                      =  6.9942509699E-02
+Minimum ESP+                      =  2.2744037074E-02
+Average ESP+                      =  4.9938177221E-02
+Mean Absolute Deviation of ESP+   =  1.0221228193E-02
+Variance of ESP+                  =  1.4739972666E-04
+Surface Integral of |ESP+|        =  1.2632300687E+00
+Surface Integral of ESP+*ESP+     =  6.6812012631E-02
+
+0.002 Atomic IsoDensity Surface Properties:
+------------------------------------------
+Area                              =  2.0856368464E+01
+
+0.0004 Atomic IsoDensity Surface Properties:
+-------------------------------------------
+Area                              =  3.2030140215E+01
+
+Info about calculation of Vee(A,A) two-electron data:
+----------------------------------------------------
+SHM_MO_LMax_C                 = -1
+SHM_MO_LMax_B                 = 8
+SHM_MO_LMax_A                 = 12
+SHM_MO_LMode                  = 0
+SHM_MO_NRadPts_C              = 0
+SHM_MO_NRadPts_B              = 58
+SHM_MO_NRadPts_A              = 240
+SHM_MO_RMax                   = 10.1481
+SHM_MO_LMO                    = 5
+SHM_MO_NumMOPU_C              = 0
+SHM_MO_NumMOPMax_C            = 0
+SHM_MO_NumMOPU_B              = 0
+SHM_MO_NumMOPMax_B            = 810
+SHM_MO_NumMOPU_A              = 0
+SHM_MO_NumMOPMax_A            = 1690
+SHM_MO_IRWAIAS                = 1
+SHM_MO_L2DCC                  = 0
+SHM_MO_L2DCB                  = 0
+SHM_MO_L2DCA                  = 0
+SHM_MO_L2DBB                  = 8
+SHM_MO_L2DBA                  = 8
+SHM_MO_L2DAA                  = 12
+SHM_MO_DoDirect               = 2
+SHM_MO_Direct_MORow_MaxRange  = 5
+Mem (MB)                      =       11.329
+
+Calculating Vee(A,A) two-electron Coulomb (C) and Exchange (X) data:  5 OTF batches, LMax = 12       
+L = All, C:  .....
+L = All, X:  ..... 
+
+Time for calculation of Vee(A,A) two-electron data = 0 sec
+ 
+ Virial-Based Energy Components (see "2EDM Note"):
+ ------------------------------------------------
+ Ee(A) = E(A) - W(A) = -3.7716091356E-01
+ T(A)                =  3.7716091356E-01
+ Ven(A)              = -2.4802313798E+00
+ Ven(A,A) = VenO(A)  = -7.3182432288E-01
+ Ven(A,A')           = -1.7484070570E+00
+ Vee0(A)             =  8.8207908999E-01
+ Vee(A)              =  8.6853253143E-01
+ VeeC(A)             =  1.0377949548E+00
+ VeeX0(A)            = -1.5571586485E-01
+ VeeX(A)             = -1.6926242341E-01
+ Vnn0(A) - W(A)      =  8.4383046273E-01
+ Vnn(A) - W(A)       =  8.5737702129E-01 (see "Vnn(A) - W(A) Note")
+ Vee0(A,A)           =  5.8768020985E-02
+ Vee(A,A)            =  4.5221462423E-02
+ VeeC(A,A)           =  1.0892130430E-01
+ VeeX0(A,A)          = -5.0153283316E-02
+ VeeX(A,A)           = -6.3699841879E-02
+ Vee0(A,A')/2        =  8.2331106900E-01
+ Vee(A,A')/2         =  8.2331106900E-01
+ VeeC(A,A')/2        =  9.2887365053E-01
+ VeeX0(A,A')/2       = -1.0556258153E-01
+ VeeX(A,A')/2        = -1.0556258153E-01
+ Ee_Intra0(A)        = -2.9589538833E-01
+ Ee_Intra(A)         = -3.0944194689E-01
+ 
+IQA Energy Components (see "2EDM Note"):
+---------------------------------------
+T(A)                              =  3.7716091356E-01
+Vneen(A,A)/2 = Vne(A,A)           = -7.3182432288E-01
+Vne(A,Mol)/2                      = -2.7865975935E+00
+Ven(A,Mol)/2                      = -1.2401156899E+00
+Vneen(A,Mol)/2                    = -4.0267132834E+00
+Vne(A,A')/2                       = -2.4206854321E+00
+Ven(A,A')/2                       = -8.7420352849E-01
+Vneen(A,A')/2                     = -3.2948889606E+00
+Vee0(A,A) + Vee0(A,A')/2          =  8.8207908999E-01
+Vee(A,A) + Vee(A,A')/2            =  8.6853253143E-01
+VeeC(A,A) + VeeC(A,A')/2          =  1.0377949548E+00
+VeeX0(A,A) + VeeX0(A,A')/2        = -1.5571586485E-01
+VeeX(A,A) + VeeX(A,A')/2          = -1.6926242341E-01
+Vnn(A,Mol)/2                      =  2.2918966055E+00
+Vee0(A,A)                         =  5.8768020985E-02
+Vee(A,A)                          =  4.5221462423E-02
+VeeC(A,A)                         =  1.0892130430E-01
+VeeX0(A,A)                        = -5.0153283316E-02
+VeeX(A,A)                         = -6.3699841879E-02
+Vee0(A,A')/2                      =  8.2331106900E-01
+Vee(A,A')/2                       =  8.2331106900E-01
+VeeC(A,A')/2                      =  9.2887365053E-01
+VeeX0(A,A')/2                     = -1.0556258153E-01
+VeeX(A,A')/2                      = -1.0556258153E-01
+V_IQA(A)                          = -8.6628414651E-01
+VC_IQA(A)                         = -6.9702172311E-01
+VX_IQA(A)                         = -1.6926242341E-01
+V_IQA(A,A)                        = -6.8660286045E-01
+VC_IQA(A,A)                       = -6.2290301858E-01
+VX_IQA(A,A)                       = -6.3699841879E-02
+V_IQA(A,A')/2                     = -1.7968128606E-01
+VC_IQA(A,A')/2                    = -7.4118704531E-02
+VX_IQA(A,A')/2                    = -1.0556258153E-01
+E_IQA0(A)                         = -4.7557667439E-01
+E_IQA(A)                          = -4.8912323295E-01
+E_IQA_Intra0(A)                   = -2.9589538833E-01
+E_IQA_Intra(A)                    = -3.0944194689E-01
+E_IQA_Inter0(A)                   = -1.7968128606E-01
+E_IQA_Inter(A)                    = -1.7968128606E-01
+
+2EDM Note:
+---------
+For post-HF, natural orbital "wavefunctions" the Muller approximation
+of the two-electron density matrix (2EDM) in terms of natural orbitals
+of the one-electron density matrix (1EDM) is used to calculate 2EDM-
+dependent properties (i.e., Vee contributions and electronic localization
+and delocalization properties).  For HF single-determinant wavefunctions the
+expression used for the 2EDM is exact.  2EDM-dependent properties are
+calculated with spin-orbital "self-interaction" terms included.
+
+DFT Note:
+--------
+VeeX represents the exchange-correlation functional for the wavefunction's
+underlying model.  For Hartree-Fock wavefunctions, VeeX is the two-electron
+Hartree-Fock exchange functional.  For wavefunctions of supported DFT models
+(currently LSDA, B3LYP and M062X), VeeX is the actual exchange-correlation functional
+of the corresponding DFT model and atomic contributions VeeX(A) to VeeX are
+explicitly calculated and unambiguous.  However, since VeeX is at least partly
+just a one-electron functional for DFT models, the partitioning of VeeX(A)
+into interatomic (VeeX(A,B) and VeeX(A,A')) and intraatomic (VeeX(A,A))
+contributions is ambiguous.  Currently, interatomic contributions VeeX(A,B)
+and VeeX(A,A') are calculated using the Hartree-Fock exchange functional while
+the intratomic contribution VeeX(A,A) is calculated as VeeX(A) - VeeX(A,A').
+For wavefunctions of non-supported DFT models, VeeX is (incorrectly) assumed
+to be the Hartree-Fock exchange functional and the atomic energies E_IQA(A)
+will not be correct and will not sum to the correct molecular energy.
+
+Vnn(A) - W(A) Note:
+------------------
+For Virial-Based atomic energies, Vnn(A) - W(A) is the contribution of
+atom A to the nuclear repulsion energy, Vnn(A), minus the contribition
+of atom A to the nuclear virial of the energy-gradient-based forces on
+the nuclei, W(A).  Vnn(A) - W(A) is defined by the 3-term sum given
+in equation (6.85.5) of R.F.W. Bader's 1990 AIM book.  For approximate
+wavefunctions Vnn(A,Mol) - W(A) is origin-dependent to the extent that
+the atomic Ehrenfest force theorem is not satisfied.  However, an atom-
+specific origin can always be defined so that the atomic virial theorem
+is satisfied.  Each Vnn(A,Mol) - W(A) value given here is determined
+using such an origin and is equivalent to the following definition:
+     Vnn(A) - W(A) = -2T(A) - Vee(A) - Ven(A).
+For stationary point geometries, such as equilibrium and transition-
+state geometries, W(A) is zero and the total atomic energy equals the
+atomic electronic energy, E(A) = Ee(A).
+
+ Total time =       15 sec
+
+ AIMInt is Done.
