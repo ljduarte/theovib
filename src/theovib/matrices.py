@@ -2,6 +2,7 @@ import numpy as np
 from numpy import transpose
 from theovib.ptable import *
 from theovib.aimall_tools import *
+import scipy.linalg
 
 """
 Some functions to deal with matrices.
@@ -41,6 +42,37 @@ def gen_block_identity(n):
     return a
 
 
+# def invert_B(B, M):
+#     """
+#     G: Wilson's G matrix
+#     RHO: Diagonal matrix of eigenvalues of G
+#     D = eingenvectors of G
+#     G_inv = D*RHO*D_t
+#     B_inv = M*B_t*G_inv
+#     """
+#     G = np.matmul(np.matmul(B, M**2), np.transpose(B))
+#     RHO, D = np.linalg.eig(G)  # eigenvalues and eigenvector of G
+#     repeat = False
+#     redundancies = []
+#     for i in range(len(RHO)):
+#         if RHO[i] <= 0.00000001:
+#             print(RHO[i])
+#             B = np.delete(B, i, 0)
+#             redundancies.append(i)
+#             repeat = True
+#     if repeat == True:
+#         G = np.matmul(np.matmul(B, M**2), np.transpose(B))
+#         RHO, D = np.linalg.eig(G)  # eigenvalues and eigenvector of G
+#         RHO = np.diag(RHO)
+#         G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
+#         B_inv = np.matmul(np.matmul(M**2, np.transpose(B)), G_inv)
+#     else:
+#         RHO = np.diag(RHO)
+#         G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
+#         B_inv = np.matmul(np.matmul(M**2, np.transpose(B)), G_inv)
+#     return B_inv, redundancies
+
+    
 def invert_B(B, M):
     """
     G: Wilson's G matrix
@@ -49,26 +81,33 @@ def invert_B(B, M):
     G_inv = D*RHO*D_t
     B_inv = M*B_t*G_inv
     """
-    G = np.matmul(np.matmul(B, M), np.transpose(B))
-    RHO, D = np.linalg.eig(G)  # eigenvalues and eigenvector of G
-    repeat = False
-    for i in range(len(RHO)):
-        if RHO[i] < 0.1:
-            del B[i]
-            print('Redundant coordinate:', i)
-            repeat = True
-    if repeat == True:
-        G = np.matmul(np.matmul(B, M), np.transpose(B))
-        RHO, D = np.linalg.eig(G)  # eigenvalues and eigenvector of G
-        RHO = np.diag(RHO)
-        G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
-        B_inv = np.matmul(np.matmul(M, np.transpose(B)), G_inv)
-    else:
-        RHO = np.diag(RHO)
-        G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
-        B_inv = np.matmul(np.matmul(M, np.transpose(B)), G_inv)
-    return B_inv
+    G = np.matmul(np.matmul(B, M**2), np.transpose(B))
+    RHO, D = scipy.linalg.eigh(G)  # eigenvalues and eigenvector of G
+#    RHO2 = np.linalg.eigh(G)[0]
+#    RHO3 = scipy.linalg.eig(G)[0]
+#    RHO4 = np.linalg.eig(G)[0]
 
+    # print('*********************************************************RHO1')
+    print(RHO)
+    # print('*********************************************************RHO2')
+    # print(RHO2)
+    # print('*********************************************************RHO3')
+    # print(RHO3)  
+    # print('*********************************************************RHO4')
+    # print(RHO4)
+    while any(rho <= 1e-8 for rho in RHO):
+        for i in range(len(RHO)):
+            if RHO[i] <= 1e-8:
+                print(RHO[i])
+                RHO = np.delete(RHO, i)
+                D = np.delete(D, i, 1)
+                break
+    print(len(RHO))
+
+    RHO = np.diag(RHO)
+    G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
+    B_inv = np.matmul(np.matmul(M**2, np.transpose(B)), G_inv)
+    return B_inv
 
 def hessian_from_iqa(atoms, delta, folder):
     errors = []
@@ -122,6 +161,7 @@ def convert_to_internal(atoms, B, H_iqa):
     B_inv = invert_B(B, M)
     B_inv_t = transpose(B_inv)
     H_internal = 15.5689412*np.matmul(np.matmul(B_inv_t, H), B_inv)
+    
 
     """
     Conversion factor = 

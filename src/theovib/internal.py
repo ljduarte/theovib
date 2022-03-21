@@ -13,7 +13,6 @@ def bond(geo, a, b):
     :return: b_row
     :rtype: 1D array 
     """
-
     v = (geo[a-1]-geo[b-1])/np.linalg.norm(geo[a-1]-geo[b-1])
     b_row = np.zeros(3*len(geo))
     b_row[3*a-3] = v[0]
@@ -95,24 +94,24 @@ def torsion(geo, a, b, c, d):
     vc = [0, 0, 0]
 
     for a in a:
-        v1 = geo[a-1]-geo[b-1]
+        v1 = geo[b-1]-geo[a-1]
         r1 = np.linalg.norm(v1)
         v1 = v1/r1
         ua = np.cross(v1, bc)/(r1*n*np.linalg.norm(np.cross(v1, bc))**2)
-        b_row[3*a-3] = ua[0]
-        b_row[3*a-2] = ua[1]
-        b_row[3*a-1] = ua[2]
-        vb = vb - (r_bc-r1*(np.dot(v1, bc)))*ua/r_bc
-        vc = vc - np.dot(cb, v1)*r1*ua/(r_bc)
+        b_row[3*a-3] = -ua[0]
+        b_row[3*a-2] = -ua[1]
+        b_row[3*a-1] = -ua[2]
+        vb = vb + (r_bc-r1*(np.dot(v1, bc)))*ua/r_bc
+        vc = vc + np.dot(bc, v1)*r1*ua/(r_bc)
 
     for d in d:
-        v2 = geo[d-1]-geo[c-1]
+        v2 = geo[c-1]-geo[d-1]
         r2 = np.linalg.norm(v2)
         v2 = v2/r2
         ud = np.cross(v2, cb)/(r2*m*np.linalg.norm(np.cross(v2, cb))**2)
-        b_row[3*d-3] = ud[0]
-        b_row[3*d-2] = ud[1]
-        b_row[3*d-1] = ud[2]
+        b_row[3*d-3] = -ud[0]
+        b_row[3*d-2] = -ud[1]
+        b_row[3*d-1] = -ud[2]
         vb = vb - np.dot(bc, v2)*r2*ud/(r_bc)
         vc = vc - (r_bc-r2*(np.dot(v2, cb)))*ud/r_bc
 
@@ -214,6 +213,7 @@ def linear(geo, a, b, c, deg=False):
     b_row[3*c-3] = uc[0]
     b_row[3*c-2] = uc[1]
     b_row[3*c-1] = uc[2]
+    
 
     if deg == True:
         b_row = np.array([b_row, np.zeros(3*len(geo))])
@@ -232,5 +232,6 @@ def linear(geo, a, b, c, deg=False):
         b_row[1][3*c-3] = vc[0]
         b_row[1][3*c-2] = vc[1]
         b_row[1][3*c-1] = vc[2]
+
 
     return b_row

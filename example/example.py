@@ -4,11 +4,14 @@ if __name__ == '__main__':
     from theovib.internal import *
     from theovib.matrices import *
     from theovib.ir import *
-    from theovib.output import *
+    from theovib.input import *
     import sys 
     import pandas as pd
     
-    input_data = Input.read_text('input.txt')
+    print('Enter input file:')
+    file = input()
+    
+    input_data = Input.read_text(file)
     molecule = Molecule.read_gaussian(input_data.folder + '/EQ.com')
     molecule.energy = get_energy_from_wfn(input_data.folder +'/EQ.wfn')
     molecule.iqa_energy = get_IQA(input_data.folder +'/EQ_atomicfiles', molecule.atoms)
@@ -32,7 +35,7 @@ if __name__ == '__main__':
     
     
     original_stdout = sys.stdout
-    with open('output.txt', 'w') as f:
+    with open(file + 'out.txt', 'w') as f:
         sys.stdout = f # Change the standard output to the file we created.
         print('########################################\n             Theovib output\n########################################\n\nA Library to Compute Infrared Properties\nWritten by L. J. Duarte\n----------------------------------------\n')
         print('MOLECULE:\t' + input_data.molecule)

@@ -1,5 +1,3 @@
-from theovib.internal import torsion
-
 
 def find(str, ch):
     indexes = []
@@ -46,19 +44,6 @@ class Input:
                         f[j].split()[1]), int(f[j].split()[2])])
                     j = j+1
                 a.angle = angle
-            elif f[i] == 'TORSION:\n':
-                torsion = []
-                j = i+1
-                while f[j] != "---\n":
-                    sep = find(f[j], '-')
-                    n = f[j].split()[:sep[0]]
-                    n = list(map(int, n))
-                    m = f[j].split()[sep[1]+1:]
-                    m = list(map(int, m))
-                    torsion.append(
-                        [n, int(f[j].split()[sep[0]+1]), int(f[j].split()[sep[1]-1]), m])
-                    j = j+1
-                a.torsion = torsion
             elif f[i] == 'LINEAR ANGLE:\n':
                 linear_angle = []
                 j = i+1
@@ -67,6 +52,21 @@ class Input:
                         f[j].split()[1]), int(f[j].split()[2])])
                     j = j+1
                 a.linear_angle = linear_angle
+            elif f[i] == 'TORSION:\n':
+                torsion = []
+                j = i+1
+                while f[j] != "---\n":
+                    sep = find(f[j], '-')
+                    print(f[j])
+                    n = f[j].split()[:sep[0]]
+                    n = list(map(int, n))
+                    m = f[j].split()[sep[1]+1:]
+                    m = list(map(int, m))
+                    torsion.append(
+                        [n, int(f[j].split()[sep[0]+1]), int(f[j].split()[sep[1]-1]), m])
+                    j = j+1
+                a.torsion = torsion
+                print(a.torsion)
             elif f[i] == 'OOP WAG:\n':
                 oop_wag = []
                 j = i+1
