@@ -1,18 +1,19 @@
 import numpy as np
-
-
+"""Functions that calculate the internal coordinates from Cartesian 
+coordinates
+"""
 def bond(geo, a, b):
-    """Calculates the bond stretch internal coordinate between a and b in the molecule
+    """Calculates the bond stretch internal coordinate between a and b 
+    in the molecule
 
-    :param geo: molecule geometry in Cartesian Coordinates
-    :type geo: 2D array  
-    :param a: label of atom a
-    :type a: int
-    :param b: label of atom b
-    :type b: int]
-    :return: b_row
-    :rtype: 1D array 
-    """
+    Args:
+        geo (2D array): molecule geometry in Cartesian Coordinates
+        a (int): label of atom A
+        b (int): label of atom B
+
+    Returns:
+        1D array: a row of the B matrix
+    """    
     v = (geo[a-1]-geo[b-1])/np.linalg.norm(geo[a-1]-geo[b-1])
     b_row = np.zeros(3*len(geo))
     b_row[3*a-3] = v[0]
@@ -24,22 +25,19 @@ def bond(geo, a, b):
 
     return b_row
 
-
 def angle(geo, a, b, c):
-    """Calculates the valence angle bend internal coordinate between atoms a-b-c
+    """Calculates the angle bending internal coordinate between atoms 
+    a-b-c
 
-    :param geo: molecular geometru in Cartesian Coordinates
-    :type geo: 2D array
-    :param a: label of atom a
-    :type a: int
-    :param b: label of atom b
-    :type b: int
-    :param c: label of atom c
-    :type c: int
-    :return: b_row
-    :rtype: 1D array
+    Args:
+        geo (2D array): molecular geometry in Cartesian Coordinates
+        a (int): label of atom A
+        b (int): label of central atom B
+        c (int): label of atom C
+
+    Returns:
+        1D array: a row of the B matrix
     """
-
     v1 = geo[a-1]-geo[b-1]
     r1 = np.linalg.norm(v1)
     v1 = v1/r1
@@ -53,7 +51,6 @@ def angle(geo, a, b, c):
     u2 = np.cross(normal, v2)
     u2 = u2/np.linalg.norm(u2)
     u2 = u2/r2
-
     b_row = np.zeros(3*len(geo))
     b_row[3*a-3] = u1[0]
     b_row[3*a-2] = u1[1]
@@ -64,25 +61,23 @@ def angle(geo, a, b, c):
     b_row[3*b-3] = -(u1[0]+u2[0])
     b_row[3*b-2] = -(u1[1]+u2[1])
     b_row[3*b-1] = -(u1[2]+u2[2])
-
+ 
     return b_row
 
-
 def torsion(geo, a, b, c, d):
-    """calculates the torsion internal coordinate between n atoms a, atom b, atom c and m atoms d
+    """Calculates the torsion internal coordinate between n atoms A, atom B, 
+    atom C and m atoms D
 
-    :param geo: molecular geometry in Cartesian Coordinates
-    :type geo: 2D array
-    :param a: list of labels for the n a-type atoms 
-    :type a: 1D array
-    :param b: label of atom b
-    :type b: int
-    :param c: label of atom c
-    :type c: int
-    :param d: list of labels for the n a-type atoms 
-    :type d: 1D array
+    Args:
+        geo (2D array): _description_
+        a (list): list of labels for the n A-type atoms
+        b (int): label of atom B
+        c (int): label of atom C
+        d (list): list of labels for the m D-type atoms
+
+    Returns:
+        1D array: a row of the B matrix
     """
-
     n = len(a)
     m = len(d)
     b_row = np.zeros(3*len(geo))
@@ -124,22 +119,20 @@ def torsion(geo, a, b, c, d):
 
     return b_row
 
-
 def wag(geo, a, b, c, d):
-    """Calculates the out-of plane wag for the plane defined by atoms a, c and d.
+    """Calculates the out-of plane wag for the plane defined by atoms A, C 
+    and D
 
-    :param geo: molecular geometry in Cartesian coordinates
-    :type geo: 2D array 
-    :param a: label of central atom a
-    :type a: int
-    :param b: label of atom b
-    :type b: int
-    :param c: label of atom c
-    :type c: int
-    :param d: label of atom d
-    :type d: int
-    """
+    Args:
+        geo (2D array): molecular geometry in Cartesian coordinates
+        a (int): label of central atom A
+        b (int): label of atom B
+        c (int): label of atom C
+        d (int): label of atom D
 
+    Returns:
+        1D array: a row of the B matrix
+    """    
     b_row = np.zeros(3*len(geo))
     vab = geo[a-1]-geo[b-1]
     rab = np.linalg.norm(vab)
@@ -175,20 +168,19 @@ def wag(geo, a, b, c, d):
 
     return b_row
 
+def linear(geo, a, b, c, deg=True):
+    """Calculates the angle bending internal coordinate between atoms 
+    a-b-c for linear coordinates
 
-def linear(geo, a, b, c, deg=False):
-    """calculates angular bend for linear molecules
+    Args:
+        geo (2D array): molecular geometry in Cartesian Coordinates
+        a (int): label of atom A
+        b (int): label of central atom B
+        c (int): label of atom C
+        deg (bool): True for degenerate states
 
-    :param geo: molecular geometry
-    :type geo: 2D array
-    :param a: label of atom a
-    :type a: int
-    :param b: label of central atom b
-    :type b: int
-    :param c: label of atom c
-    :type c: int
-    :param deg: set deg=True if degenerate coordinate, defaults to False
-    :type deg: bool, optional
+    Returns:
+        1D array: a row of the B matrix, two rows if deg = True
     """
     b_row = np.zeros(3*len(geo))
     v1 = geo[a-1]-geo[b-1]
@@ -202,8 +194,6 @@ def linear(geo, a, b, c, deg=False):
     ua = u/r1
     uc = u/r2
     ub = -ua-uc
-    print(ua)
-
     b_row[3*a-3] = ua[0]
     b_row[3*a-2] = ua[1]
     b_row[3*a-1] = ua[2]
@@ -213,8 +203,7 @@ def linear(geo, a, b, c, deg=False):
     b_row[3*c-3] = uc[0]
     b_row[3*c-2] = uc[1]
     b_row[3*c-1] = uc[2]
-    
-
+  
     if deg == True:
         b_row = np.array([b_row, np.zeros(3*len(geo))])
         v = np.cross(u, v1)
@@ -232,6 +221,5 @@ def linear(geo, a, b, c, deg=False):
         b_row[1][3*c-3] = vc[0]
         b_row[1][3*c-2] = vc[1]
         b_row[1][3*c-1] = vc[2]
-
 
     return b_row

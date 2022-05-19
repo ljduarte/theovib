@@ -7,22 +7,30 @@ import scipy.linalg
 """
 Some functions to deal with matrices.
 """
+
 def vector_to_square(vector):
-    """
-    INPUT: Column matrix 
-    OUTPUT: Square matrix
-    """
+    """takes a vector and returns a diagonal matrix.
+
+    Args:
+        vector (list or array): colimn matrix 
+
+    Returns:
+        array: diagonal matrix
+    """    
     a = np.concatenate([vector, vector], axis=1)
     while a.shape[1] < vector.shape[0]:
         a = np.concatenate([a, vector], axis=1)
     return a
 
-
 def gen_A_matrix(n):
-    """
-    INPUT: number of atoms 
-    OUTPUT: transformation matrix
-    """
+    """Generate the transformation matrix A
+
+    Args:
+        n (int): number of atoms
+
+    Returns:
+        array: transformation matrix
+    """    
     a = np.identity(3)
     b = np.concatenate([a, a], axis=0)
     for i in range(1, n-1):
@@ -32,72 +40,34 @@ def gen_A_matrix(n):
         c = np.concatenate([c, b], axis=1)
     return c
 
-
 def gen_block_identity(n):
-    """
-    INPUT: number of atoms 
-    OUTPUT:block diagonal matrix 
+    """Generates a block indentity matrix
+
+    Args:
+        n (int): number of atoms
+
+    Returns:
+        array: block diagonal matrix
     """
     a = np.kron(np.identity(n), np.ones([3, 3]))  # kronecker product
     return a
-
-
-# def invert_B(B, M):
-#     """
-#     G: Wilson's G matrix
-#     RHO: Diagonal matrix of eigenvalues of G
-#     D = eingenvectors of G
-#     G_inv = D*RHO*D_t
-#     B_inv = M*B_t*G_inv
-#     """
-#     G = np.matmul(np.matmul(B, M**2), np.transpose(B))
-#     RHO, D = np.linalg.eig(G)  # eigenvalues and eigenvector of G
-#     repeat = False
-#     redundancies = []
-#     for i in range(len(RHO)):
-#         if RHO[i] <= 0.00000001:
-#             print(RHO[i])
-#             B = np.delete(B, i, 0)
-#             redundancies.append(i)
-#             repeat = True
-#     if repeat == True:
-#         G = np.matmul(np.matmul(B, M**2), np.transpose(B))
-#         RHO, D = np.linalg.eig(G)  # eigenvalues and eigenvector of G
-#         RHO = np.diag(RHO)
-#         G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
-#         B_inv = np.matmul(np.matmul(M**2, np.transpose(B)), G_inv)
-#     else:
-#         RHO = np.diag(RHO)
-#         G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
-#         B_inv = np.matmul(np.matmul(M**2, np.transpose(B)), G_inv)
-#     return B_inv, redundancies
-
     
 def invert_B(B, M):
-    """
-    G: Wilson's G matrix
-    RHO: Diagonal matrix of eigenvalues of G
-    D = eingenvectors of G
-    G_inv = D*RHO*D_t
-    B_inv = M*B_t*G_inv
-    """
-    G = np.matmul(np.matmul(B, M**2), np.transpose(B))
-    RHO, D = scipy.linalg.eigh(G)  # eigenvalues and eigenvector of G
-#    RHO2 = np.linalg.eigh(G)[0]
-#    RHO3 = scipy.linalg.eig(G)[0]
-#    RHO4 = np.linalg.eig(G)[0]
+    """Inverts the B matrix.
 
-    # print('*********************************************************RHO1')
-    print(RHO)
-    # print('*********************************************************RHO2')
-    # print(RHO2)
-    # print('*********************************************************RHO3')
-    # print(RHO3)  
-    # print('*********************************************************RHO4')
-    # print(RHO4)
-    while any(rho <= 1e-8 for rho in RHO):
+    Args:
+        B (matrix): matrix that converts Cartesian to internal coordinates
+        M (_type_): diagonal matrix of invese of atomic mass square root
+
+    Returns:
+        matrix: Inverse of B
+    """    
+    G = np.matmul(np.matmul(B, M**2), np.transpose(B)) # Wilson's G matrix
+    RHO, D = scipy.linalg.eigh(G)  # Eigenvalues and eigenvector of G
+
+    while any(rho <= 1e-5 for rho in RHO):
         for i in range(len(RHO)):
-            if RHO[i] <= 1e-8:
+            if RHO[i] <= 1e-5:
                 print(RHO[i])
                 RHO = np.delete(RHO, i)
                 D = np.delete(D, i, 1)
@@ -105,11 +75,23 @@ def invert_B(B, M):
     print(len(RHO))
 
     RHO = np.diag(RHO)
-    G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D))
+    #G_inv =  D*RHO*D_t
+    G_inv = np.matmul(np.matmul(D, np.linalg.inv(RHO)), np.transpose(D)) 
     B_inv = np.matmul(np.matmul(M**2, np.transpose(B)), G_inv)
     return B_inv
 
-def hessian_from_iqa(atoms, delta, folder):
+def hessian_from_iqa(atoms, folder, delta=0.05):
+    """Generates  the 3-dimensional Hessian matrix form the IQA terms.
+
+    Args:
+        atoms (list): List of atoms in the system
+        delta (float): Displacement value that generated the non-equilibrium 
+                       geometries
+        folder (list): list of _atomicfiles (aimall outputs)
+
+    Returns:
+        3D array: 3D-Hessian matrix
+    """    
     errors = []
     H_iqa = np.zeros([3*len(atoms), 3*len(atoms), len(atoms) + (len(atoms) * (len(atoms)-1))]) # initiate the cubic matrix
     # Calculate the diagonal elements
@@ -143,13 +125,16 @@ def hessian_from_iqa(atoms, delta, folder):
     return H, H_iqa, errors
 
 def convert_to_internal(atoms, B, H_iqa):
+    """Converts the 3-D Hessian from Cartesian to Internal coordinates
 
-    """        
-    STEP V: Internal coordinates         
-    Internal Coordinates = B*X
-    Force constants in internal coordinates:
-    H_internal = B_inv_t * H * B_inv
-    """        
+    Args:
+        atoms (list): list of atoms
+        B (2D array): B matrix -> converts from Cartesian to Internal coordinates
+        H_iqa (3D array): 3D Hessian matrix in Cartesian coordinates 
+
+    Returns:
+        3D array: 3D Hessian in internal coordinates
+    """
     M = np.zeros((3*len(atoms), 3*len(atoms)))
     for i in range(3*len(atoms)):
         M[i][i] = atomic_mass[atoms[int(i/3)]]**(-0.5)
@@ -160,16 +145,16 @@ def convert_to_internal(atoms, B, H_iqa):
     #Determining the G matrix  
     B_inv = invert_B(B, M)
     B_inv_t = transpose(B_inv)
-    H_internal = 15.5689412*np.matmul(np.matmul(B_inv_t, H), B_inv)
+    H_internal = 15.5689412*np.matmul(np.matmul(B_inv_t, H), B_inv) #B_inv_t * H * B_inv
     
-
-    """
+    '''
     Conversion factor = 
-    (4.3597482 x 10^{–11} dyne–cm/Hartree) x
+    (4.3597482 x 10^{-11} dyne-cm/Hartree) x
      (1 Bohr/0.529177249 Ǻngstrom) x
-     (1 Bohr/0.529177249 x 10^{–8} cm) (10^3 mdyne/dyne) 
-     = 15.5689412 (mdyne/Ǻ) (Hartree/Bohr2)^{–1} 
-    """
+     (1 Bohr/0.529177249 x 10^{-8} cm) (10^3 mdyne/dyne) 
+     = 15.5689412 (mdyne/Ǻ) (Hartree/Bohr2)^{-1} 
+    '''
+   
     iqa_forces = np.zeros([H_internal.shape[0],H_internal.shape[1] ,number_of_terms]) #initialize the 3D matrix
     for i in range(number_of_terms):
         iqa_forces[:,:,i]=15.5689412*np.matmul(np.matmul(B_inv_t, H_iqa[:,:,i]),B_inv)

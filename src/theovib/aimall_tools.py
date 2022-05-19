@@ -1,11 +1,15 @@
 from numpy import array
 
-
 def get_IQA(atomicfiles, atoms):
-    """
-    INPUT: _atomicfiles folder and list of atoms
-    OUTPUT: three arrays containing E_intra, Vcl and Vxc IQA contributions.
-    """
+    """Reads IQA terms from AIMALL outputs
+
+    Args:
+        atomicfiles (str): List of atomicfiles folder from AIMAll output
+        atoms (array): List of atoms in the system
+
+    Returns:
+        np.array: Arrays containing E_intra, Vcl and Vxc IQA contributions
+    """    
     atom_label = [atoms[i].lower() + str(i+1) for i in range(len(atoms))]
     Eintra = []
     Vcl = []
@@ -35,22 +39,31 @@ def get_IQA(atomicfiles, atoms):
     Vxc = array(Vxc)
     return Eintra, Vcl, Vxc
 
-
 def get_energy_from_wfn(file):
-    """
-    INPUT: .wfn file 
-    OUTPUT: the energy eigenvalue from the wavefunction
+    """Reads energy value from Gaussian's wavefunction file
+
+    Args:
+        file (str): file path
+
+    Returns:
+        float: energy eigenvalue from the wavefunction (Hartree)
     """
     f = open(file)
     lines = f.readlines()
     energy = float(lines[-1].split()[3])
     return energy
 
-
 def get_electronic(file):
-    """
-    INPUT: .int file 
-    OUTPUT: atomic charges and dipole
+    """Reads atomic charge and dipoles from aimall output
+
+    Args:
+        file (str): .int file path
+
+    Returns:
+        charge (float): atomic charge
+        dipole_x (float): x component of atomic dipole
+        dipole_y (float): y component of atomic dipole
+        dipole_z (float): z component of atomic dipole
     """
     f = open(file)
     lines = f.readlines()
