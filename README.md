@@ -28,9 +28,11 @@ $ pip install theovib
 ```
 
 ## Usage
+
 You can perform a vibrational analysis for water using the files in the **"example"** folder.
 
 ### Vibrational analysis of the Water molecule
+
 In **./example/h2o** you will find all single point calculations needed to generate the 3D-Hessian matrix.
 
 The Cartesian coordinates of the water molecule are:
@@ -43,9 +45,9 @@ The Cartesian coordinates of the water molecule are:
 
 The internal coordinates are defined as:
 
-**bond** between atoms **1** and **2**
-**bond** between atoms **1** and **3**
-**angle** defined by atoms **1**, **2** and **3**
+* **bond** between atoms **1** and **2**;
+* **bond** between atoms **1** and **3**;
+* **angle** defined by atoms **1**, **2** and **3**.
 
 We start writing the input file:
 
@@ -66,6 +68,44 @@ ANGLE:
 ```
 
 **DELTA** is the displacement that generated the non-equilibrium geometries.
+
+#### Reading the input file
+
+Import packages:
+
+```python
+    from theovib.molecule import *
+    from theovib.internal import *
+    from theovib.matrices import *
+    from theovib.ir import *
+    from theovib.input import *
+```
+
+Use the **Input** class:
+
+```python
+input_data = Input.read_text('input.txt')
+```
+
+Use the **Molecule** class and its methods to get and store data:
+
+```python
+molecule = Molecule.read_gaussian(input_data.folder + '/EQ.com')
+molecule.energy = get_energy_from_wfn(input_data.folder +'/EQ.wfn')
+molecule.iqa_energy = get_IQA(input_data.folder +'/EQ_atomicfiles', molecule.atoms)
+```
+
+Initialize and construct the **B** matrix:
+
+```python
+b_matrix = []
+    for coord in input_data.bond:
+        b_matrix.append(bond(molecule.positions, coord[0], coord[1]))
+    for coord in input_data.angle:
+        b_matrix.append(angle(molecule.positions, coord[0], coord[1], coord[2]))
+molecule.b_matrix = np.array(b_matrix)    
+```
+
 
 
 ## Contributing
