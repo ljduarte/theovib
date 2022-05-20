@@ -14,9 +14,13 @@ Infrared intensities are obtained from atomic charges and dipoles obtained by AI
 
 [Usage](#Usage)
 
+[Theory](#theory)
+
 [Contributing](#Contributing)
 
 [License](#License)
+
+
 
 
 ## Installation
@@ -129,6 +133,46 @@ molecule.int, molecule.c_tensors, molecule.ct_tensors, molecule.dp_tensors = int
 molecule.internal_hessian, molecule.iqa_forces = convert_to_internal(molecule.atoms, molecule.b_matrix, molecule.iqa_hessian)
 ```
 
+## Theory
+#### 1. Force constant in internal coordinates:
+
+In order to calculate, and decompose the force constants into its IQA components, one needs first to convert the Cartesian Hessian into the the Wilson's $\mathbf{F}$ matrix, that contains the force constants, and their interactions, expressed in internal coordinates. To do this, it is necessary to define the $\mathbf{B}$ matrix, that converts the $N\times 3N$ Cartesian coordinates matrix, $\mathbf{X}$ in the internal coordinates matrix $\mathbf{R}$:
+
+$$ \mathbf{B}\mathbf{X} = \mathbf{R} $$
+
+The process of setting-up the $\mathbf{B}$ matrix is tedious and can be found in the literature. 
+We start by calculating the pseudo-inverse of $\mathbf{B}$ by:
+
+$$ \mathbf{B}^{-1} =\mathbf{M}^{2} \mathbf{B}^{\dagger}\mathbf{G}^{-1} $$
+
+$\mathbf{G}$ contains the inverse of the kinetic energy terms and its inverse, $\mathbf{G}^{-1}$, is given by:
+
+$$\mathbf{G}^{-1} =\mathbf{D} \mathbf{\Phi}^{-1}\mathbf{D}^{\dagger}$$
+
+where $\mathbf{D}$ and $\mathbf{\Phi}$ are, respectively, the eigenvectors and the diagonal eigenvalues matrices of $\mathbf{G}$. The force constants in internal coordinates are then obtained as follows:
+
+$$\mathbf{F} ={\mathbf{B}^{\dagger}}^{-1} \mathbf{H}\mathbf{B}^{-1}$$   
+
+The decomposition of the force constants into the IQA contributions is done using Equation \ref{eq: iqa_derivattive}:
+
+$$ \left[\sum_{k=1}^{N^2} \mathbf{F^{IQA}_k}\right] ={\mathbf{B}^{\dagger}}^{-1} \left[\sum_{k=1}^{N^2} \mathbf{H^{IQA}_k}\right] \mathbf{B}^{-1} $$
+
+Each $F^{IQA}_k$ is a matrix containing the contribution of the $k^{th}$ IQA term of $\mathbf{F}$. 
+
+#### 2. Infrared intensities:
+
+The infrared intensity, $A_k$, of normal mode $Q_k$ is defined as:
+
+$$A_k = \frac{N_A \pi}{3c^2}\left(\frac{\mathrm{d}\vec{p}}{\mathrm{d}Q_k}\right)^2 = \frac{N_A \pi}{3c^2} \sum_{i=1}^3 \left( \frac{\partial\vec{p}}{\partial \sigma_i} \cdot \frac{\partial\sigma_i}{\partial Q_k}\right)^2$$
+
+where $N_A$ is the Avogadro's constant, $c$ is the speed of light and $\vec{p}$ is the molecular dipole moment. The derivative $\frac{\partial\sigma_i}{\partial Q_k}$ is a element of the $k^{th}$ column of $\mathbf{L}$.
+
+$$\mathbf{L} = \mathbf{M}\mathbf{A}$$
+
+Let $\mathbf{T}$  be a block-diagonal matrix of dimension $3N \times 3N$ where each $3 \times 3$ block is an atomic polar tensor. The dipole moment derivative of normal mode $Q_k$ is obtained by solving:
+
+$$\frac{\mathrm{d}p}{\mathrm{d}Q_k} = \mathbf{U} \cdot \mathbf{T} \cdot \mathbf{L_k}$$
+$\mathbf{L_k}$ is the $k^{th}$ column of $\mathbf{L}$. $\mathbf{U}$ is a $1 \times N$  line vector whose elements equals 1. 
 
 ## Contributing
 
