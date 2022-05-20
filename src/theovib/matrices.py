@@ -95,7 +95,9 @@ def hessian_from_iqa(atoms, folder, delta=0.05):
         folder (list): list of _atomicfiles (aimall outputs)
 
     Returns:
+        2D array: Hessian matrix
         3D array: 3D-Hessian matrix
+        list: numerical error
     """
     errors = []
     H_iqa = np.zeros([3*len(atoms), 3*len(atoms), len(atoms) +

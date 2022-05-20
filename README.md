@@ -69,16 +69,16 @@ ANGLE:
 
 **DELTA** is the displacement that generated the non-equilibrium geometries.
 
-#### Reading the input file
+#### 1. Reading the input file:
 
-Import packages:
+Import modules:
 
 ```python
-    from theovib.molecule import *
-    from theovib.internal import *
-    from theovib.matrices import *
-    from theovib.ir import *
-    from theovib.input import *
+ from theovib.molecule import *
+ from theovib.internal import *
+ from theovib.matrices import *
+ from theovib.ir import *
+ from theovib.input import *
 ```
 
 Use the **Input** class:
@@ -95,6 +95,8 @@ molecule.energy = get_energy_from_wfn(input_data.folder +'/EQ.wfn')
 molecule.iqa_energy = get_IQA(input_data.folder +'/EQ_atomicfiles', molecule.atoms)
 ```
 
+#### 2. Construct the B matrix:
+
 Initialize and construct the **B** matrix:
 
 ```python
@@ -106,6 +108,26 @@ b_matrix = []
 molecule.b_matrix = np.array(b_matrix)    
 ```
 
+#### 3. Obtain the Hessian and 3D Hessian matrix:
+
+```python   
+molecule.hessian, molecule.iqa_hessian, errors = hessian_from_iqa(molecule.atoms, input_data.delta, input_data.folder)
+```
+
+The Hessian and 3D Hessian are numerrically generated using IQA contributions from AIMAll outputs
+
+#### 3. Calculate the normal coordinates and infrared intensities:
+
+```python
+molecule.normal_coordinates, molecule.freq, molecule.iqa_freq, molecule.iqa_terms = normal_modes(molecule.atoms, molecule.iqa_hessian)
+molecule.int, molecule.c_tensors, molecule.ct_tensors, molecule.dp_tensors = intensities(molecule.atoms, molecule.positions, molecule.normal_coordinates, input_data.folder, input_data.delta)
+```
+
+#### 4. Convert to internal coordinates to obtain the force constants:
+
+```python
+molecule.internal_hessian, molecule.iqa_forces = convert_to_internal(molecule.atoms, molecule.b_matrix, molecule.iqa_hessian)
+```
 
 
 ## Contributing
