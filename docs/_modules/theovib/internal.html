@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>theovib.internal &#8212; Theovib  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Theovib  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">theovib.internal</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for theovib.internal</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="bond"><a class="viewcode-back" href="../../autoapi/theovib/internal/index.html#theovib.internal.bond">[docs]</a><span class="k">def</span> <span class="nf">bond</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the bond stretch internal coordinate between a and b in the molecule</span>
+
+<span class="sd">    :param geo: molecule geometry in Cartesian Coordinates</span>
+<span class="sd">    :type geo: 2D array  </span>
+<span class="sd">    :param a: label of atom a</span>
+<span class="sd">    :type a: int</span>
+<span class="sd">    :param b: label of atom b</span>
+<span class="sd">    :type b: int]</span>
+<span class="sd">    :return: b_row</span>
+<span class="sd">    :rtype: 1D array </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">b_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">geo</span><span class="p">))</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">b_row</span></div>
+
+
+<div class="viewcode-block" id="angle"><a class="viewcode-back" href="../../autoapi/theovib/internal/index.html#theovib.internal.angle">[docs]</a><span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the valence angle bend internal coordinate between atoms a-b-c</span>
+
+<span class="sd">    :param geo: molecular geometru in Cartesian Coordinates</span>
+<span class="sd">    :type geo: 2D array</span>
+<span class="sd">    :param a: label of atom a</span>
+<span class="sd">    :type a: int</span>
+<span class="sd">    :param b: label of atom b</span>
+<span class="sd">    :type b: int</span>
+<span class="sd">    :param c: label of atom c</span>
+<span class="sd">    :type c: int</span>
+<span class="sd">    :return: b_row</span>
+<span class="sd">    :rtype: 1D array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">v1</span><span class="o">/</span><span class="n">r1</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">v2</span><span class="o">/</span><span class="n">r2</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">))</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">u1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u1</span><span class="p">)</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">u1</span><span class="o">/</span><span class="n">r1</span>
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">u2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u2</span><span class="p">)</span>
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">u2</span><span class="o">/</span><span class="n">r2</span>
+
+    <span class="n">b_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">geo</span><span class="p">))</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">u1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">u1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">u1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">u2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">u2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">u2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">u1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">u2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">u1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">u2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">u1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">u2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">b_row</span></div>
+
+
+<div class="viewcode-block" id="torsion"><a class="viewcode-back" href="../../autoapi/theovib/internal/index.html#theovib.internal.torsion">[docs]</a><span class="k">def</span> <span class="nf">torsion</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculates the torsion internal coordinate between n atoms a, atom b, atom c and m atoms d</span>
+
+<span class="sd">    :param geo: molecular geometry in Cartesian Coordinates</span>
+<span class="sd">    :type geo: 2D array</span>
+<span class="sd">    :param a: list of labels for the n a-type atoms </span>
+<span class="sd">    :type a: 1D array</span>
+<span class="sd">    :param b: label of atom b</span>
+<span class="sd">    :type b: int</span>
+<span class="sd">    :param c: label of atom c</span>
+<span class="sd">    :type c: int</span>
+<span class="sd">    :param d: list of labels for the n a-type atoms </span>
+<span class="sd">    :type d: 1D array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">b_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">geo</span><span class="p">))</span>
+    <span class="n">bc</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r_bc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bc</span><span class="p">)</span>
+    <span class="n">bc</span> <span class="o">=</span> <span class="n">bc</span><span class="o">/</span><span class="n">r_bc</span>
+    <span class="n">cb</span> <span class="o">=</span> <span class="o">-</span><span class="n">bc</span>
+    <span class="n">vb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">vc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">v1</span><span class="o">/</span><span class="n">r1</span>
+        <span class="n">ua</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">bc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">r1</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">bc</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">vb</span> <span class="o">=</span> <span class="n">vb</span> <span class="o">-</span> <span class="p">(</span><span class="n">r_bc</span><span class="o">-</span><span class="n">r1</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">bc</span><span class="p">)))</span><span class="o">*</span><span class="n">ua</span><span class="o">/</span><span class="n">r_bc</span>
+        <span class="n">vc</span> <span class="o">=</span> <span class="n">vc</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cb</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span><span class="o">*</span><span class="n">r1</span><span class="o">*</span><span class="n">ua</span><span class="o">/</span><span class="p">(</span><span class="n">r_bc</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">v2</span><span class="o">/</span><span class="n">r2</span>
+        <span class="n">ud</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">cb</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">r2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">cb</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ud</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ud</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ud</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">vb</span> <span class="o">=</span> <span class="n">vb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">bc</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span><span class="o">*</span><span class="n">r2</span><span class="o">*</span><span class="n">ud</span><span class="o">/</span><span class="p">(</span><span class="n">r_bc</span><span class="p">)</span>
+        <span class="n">vc</span> <span class="o">=</span> <span class="n">vc</span> <span class="o">-</span> <span class="p">(</span><span class="n">r_bc</span><span class="o">-</span><span class="n">r2</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">cb</span><span class="p">)))</span><span class="o">*</span><span class="n">ud</span><span class="o">/</span><span class="n">r_bc</span>
+
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">vb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">vc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">b_row</span></div>
+
+
+<div class="viewcode-block" id="wag"><a class="viewcode-back" href="../../autoapi/theovib/internal/index.html#theovib.internal.wag">[docs]</a><span class="k">def</span> <span class="nf">wag</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the out-of plane wag for the plane defined by atoms a, c and d.</span>
+
+<span class="sd">    :param geo: molecular geometry in Cartesian coordinates</span>
+<span class="sd">    :type geo: 2D array </span>
+<span class="sd">    :param a: label of central atom a</span>
+<span class="sd">    :type a: int</span>
+<span class="sd">    :param b: label of atom b</span>
+<span class="sd">    :type b: int</span>
+<span class="sd">    :param c: label of atom c</span>
+<span class="sd">    :type c: int</span>
+<span class="sd">    :param d: label of atom d</span>
+<span class="sd">    :type d: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">b_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">geo</span><span class="p">))</span>
+    <span class="n">vab</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vab</span><span class="p">)</span>
+    <span class="n">eab</span> <span class="o">=</span> <span class="n">vab</span><span class="o">/</span><span class="n">rab</span>
+    <span class="n">vac</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vac</span><span class="p">)</span>
+    <span class="n">eac</span> <span class="o">=</span> <span class="n">vac</span><span class="o">/</span><span class="n">rac</span>
+    <span class="n">vad</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vad</span><span class="p">)</span>
+    <span class="n">ead</span> <span class="o">=</span> <span class="n">vad</span><span class="o">/</span><span class="n">rad</span>
+
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">eac</span><span class="p">,</span> <span class="n">ead</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">eac</span><span class="p">,</span> <span class="n">ead</span><span class="p">))</span>
+
+    <span class="n">ub</span> <span class="o">=</span> <span class="n">normal</span><span class="o">/</span><span class="n">rab</span>
+    <span class="n">uc</span> <span class="o">=</span> <span class="p">(</span><span class="n">normal</span><span class="o">/</span><span class="n">rac</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">eab</span><span class="p">,</span> <span class="n">ead</span><span class="p">))</span> <span class="o">/</span>
+                         <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">eac</span><span class="p">,</span> <span class="n">ead</span><span class="p">)))</span>
+    <span class="n">ud</span> <span class="o">=</span> <span class="p">(</span><span class="n">normal</span><span class="o">/</span><span class="n">rad</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">eab</span><span class="p">,</span> <span class="n">eac</span><span class="p">))</span> <span class="o">/</span>
+                         <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">eac</span><span class="p">,</span> <span class="n">ead</span><span class="p">)))</span>
+    <span class="n">ua</span> <span class="o">=</span> <span class="o">-</span><span class="n">ub</span><span class="o">-</span><span class="n">uc</span><span class="o">-</span><span class="n">ud</span>
+
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">uc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">uc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">uc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ud</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ud</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">d</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ud</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">b_row</span></div>
+
+
+<div class="viewcode-block" id="linear"><a class="viewcode-back" href="../../autoapi/theovib/internal/index.html#theovib.internal.linear">[docs]</a><span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculates angular bend for linear molecules</span>
+
+<span class="sd">    :param geo: molecular geometry</span>
+<span class="sd">    :type geo: 2D array</span>
+<span class="sd">    :param a: label of atom a</span>
+<span class="sd">    :type a: int</span>
+<span class="sd">    :param b: label of central atom b</span>
+<span class="sd">    :type b: int</span>
+<span class="sd">    :param c: label of atom c</span>
+<span class="sd">    :type c: int</span>
+<span class="sd">    :param deg: set deg=True if degenerate coordinate, defaults to False</span>
+<span class="sd">    :type deg: bool, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">geo</span><span class="p">))</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">geo</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">geo</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>     
+
+    <span class="n">ua</span> <span class="o">=</span> <span class="n">u</span><span class="o">/</span><span class="n">r1</span>
+    <span class="n">uc</span> <span class="o">=</span> <span class="n">u</span><span class="o">/</span><span class="n">r2</span>
+    <span class="n">ub</span> <span class="o">=</span> <span class="o">-</span><span class="n">ua</span><span class="o">-</span><span class="n">uc</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ua</span><span class="p">)</span>
+
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ua</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ub</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">uc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">uc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b_row</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">uc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">deg</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">b_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">b_row</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">geo</span><span class="p">))])</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="n">va</span> <span class="o">=</span> <span class="n">v</span><span class="o">/</span><span class="n">r1</span>
+        <span class="n">vc</span> <span class="o">=</span> <span class="n">v</span><span class="o">/</span><span class="n">r2</span>
+        <span class="n">vb</span> <span class="o">=</span> <span class="o">-</span><span class="n">va</span><span class="o">-</span><span class="n">vc</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">va</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">va</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">va</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">vb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">vc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">vc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">b_row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="o">*</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">b_row</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Theovib  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">theovib.internal</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, L. J. Duarte.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>

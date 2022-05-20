@@ -1,0 +1,117 @@
+:py:mod:`theovib.internal`
+==========================
+
+.. py:module:: theovib.internal
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   theovib.internal.bond
+   theovib.internal.angle
+   theovib.internal.torsion
+   theovib.internal.wag
+   theovib.internal.linear
+
+
+
+.. py:function:: bond(geo, a, b)
+
+   Calculates the bond stretch internal coordinate between a and b
+   in the molecule
+
+   :param geo: molecule geometry in Cartesian Coordinates
+   :type geo: 2D array
+   :param a: label of atom A
+   :type a: int
+   :param b: label of atom B
+   :type b: int
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: angle(geo, a, b, c)
+
+   Calculates the angle bending internal coordinate between atoms
+   a-b-c
+
+   :param geo: molecular geometry in Cartesian Coordinates
+   :type geo: 2D array
+   :param a: label of atom A
+   :type a: int
+   :param b: label of central atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: torsion(geo, a, b, c, d)
+
+   Calculates the torsion internal coordinate between n atoms A, atom B,
+   atom C and m atoms D
+
+   :param geo: _description_
+   :type geo: 2D array
+   :param a: list of labels for the n A-type atoms
+   :type a: list
+   :param b: label of atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+   :param d: list of labels for the m D-type atoms
+   :type d: list
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: wag(geo, a, b, c, d)
+
+   Calculates the out-of plane wag for the plane defined by atoms A, C
+   and D
+
+   :param geo: molecular geometry in Cartesian coordinates
+   :type geo: 2D array
+   :param a: label of central atom A
+   :type a: int
+   :param b: label of atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+   :param d: label of atom D
+   :type d: int
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: linear(geo, a, b, c, deg=True)
+
+   Calculates the angle bending internal coordinate between atoms
+   a-b-c for linear coordinates
+
+   :param geo: molecular geometry in Cartesian Coordinates
+   :type geo: 2D array
+   :param a: label of atom A
+   :type a: int
+   :param b: label of central atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+   :param deg: True for degenerate states
+   :type deg: bool
+
+   :returns: a row of the B matrix, two rows if deg = True
+   :rtype: 1D array
+
+

@@ -1,0 +1,59 @@
+:py:mod:`theovib.aimall_tools`
+==============================
+
+.. py:module:: theovib.aimall_tools
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   theovib.aimall_tools.get_IQA
+   theovib.aimall_tools.get_energy_from_wfn
+   theovib.aimall_tools.get_electronic
+
+
+
+.. py:function:: get_IQA(atomicfiles, atoms)
+
+   Reads IQA terms from AIMALL outputs
+
+   :param atomicfiles: List of atomicfiles folder from AIMAll output
+   :type atomicfiles: str
+   :param atoms: List of atoms in the system
+   :type atoms: array
+
+   :returns: Arrays containing E_intra, Vcl and Vxc IQA contributions
+   :rtype: np.array
+
+
+.. py:function:: get_energy_from_wfn(file)
+
+   Reads energy value from Gaussian's wavefunction file
+
+   :param file: file path
+   :type file: str
+
+   :returns: energy eigenvalue from the wavefunction (Hartree)
+   :rtype: float
+
+
+.. py:function:: get_electronic(file)
+
+   Reads atomic charge and dipoles from aimall output
+
+   :param file: .int file path
+   :type file: str
+
+   :returns: atomic charge
+             dipole_x (float): x component of atomic dipole
+             dipole_y (float): y component of atomic dipole
+             dipole_z (float): z component of atomic dipole
+   :rtype: charge (float)
+
+

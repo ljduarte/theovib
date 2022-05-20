@@ -1,0 +1,58 @@
+:py:mod:`theovib.ir`
+====================
+
+.. py:module:: theovib.ir
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   theovib.ir.normal_modes
+   theovib.ir.intensities
+
+
+
+.. py:function:: normal_modes(atoms, H_iqa)
+
+   Calculates the normal modes of vibration from the IQA 3D-Hessian matrix
+
+   :param atoms: list of atoms in the system
+   :type atoms: list
+   :param H_iqa: 3D Hessian calculated with IQA contributions
+   :type H_iqa: 3D array
+
+   :returns: normal modes matrix. Each column contrains the displacement of atoms for a normal coordinate
+             list: frequencies of vibration
+             3D array: IQA partitioning of frequencies
+             list: list of IQA terms
+   :rtype: 2D array
+
+
+.. py:function:: intensities(atoms, coords, normal_coordinates, folder, delta)
+
+   Calculates the infrared intensities and CCTDP contributions from AIM charges and dipoles
+
+   :param atoms: list of .int files (AIMAll outputs)
+   :type atoms: list
+   :param coords: Cartesian coordinates
+   :type coords: 2D array
+   :param normal_coordinates: normal coordinates matrix
+   :type normal_coordinates: 2D array
+   :param folder: list of AIMAll _atomicfiles folders
+   :type folder: list
+   :param delta: displacement value that generated the non-equilibrium geometries
+   :type delta: float
+
+   :returns: infrared intensities
+             2D array: Charge (C) contribution
+             2D array: Charge-Transfer (CT) contribution
+             2D array: Dipolar Polarization (DP) contribution
+   :rtype: list
+
+

@@ -1,0 +1,502 @@
+:py:mod:`theovib`
+=================
+
+.. py:module:: theovib
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   aimall_tools/index.rst
+   input/index.rst
+   internal/index.rst
+   ir/index.rst
+   matrices/index.rst
+   molecule/index.rst
+   ptable/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   theovib.Input
+   theovib.Molecule
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   theovib.find
+   theovib.bond
+   theovib.angle
+   theovib.torsion
+   theovib.wag
+   theovib.linear
+   theovib.get_electronic
+   theovib.normal_modes
+   theovib.intensities
+   theovib.vector_to_square
+   theovib.gen_A_matrix
+   theovib.gen_block_identity
+   theovib.invert_B
+   theovib.hessian_from_iqa
+   theovib.convert_to_internal
+   theovib.get_IQA
+   theovib.get_energy_from_wfn
+   theovib.vector_to_square
+   theovib.gen_A_matrix
+   theovib.gen_block_identity
+   theovib.invert_B
+   theovib.hessian_from_iqa
+   theovib.convert_to_internal
+   theovib.get_IQA
+   theovib.get_energy_from_wfn
+   theovib.get_electronic
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   theovib.atomic_mass
+   theovib.constants
+   theovib.atomic_mass
+   theovib.constants
+   theovib.atomic_mass
+   theovib.constants
+   theovib.__version__
+
+
+.. py:function:: find(str, ch)
+
+
+.. py:class:: Input
+
+   Stores the input information
+
+
+   .. py:method:: read_text(cls, file)
+      :classmethod:
+
+
+
+.. py:function:: bond(geo, a, b)
+
+   Calculates the bond stretch internal coordinate between a and b
+   in the molecule
+
+   :param geo: molecule geometry in Cartesian Coordinates
+   :type geo: 2D array
+   :param a: label of atom A
+   :type a: int
+   :param b: label of atom B
+   :type b: int
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: angle(geo, a, b, c)
+
+   Calculates the angle bending internal coordinate between atoms
+   a-b-c
+
+   :param geo: molecular geometry in Cartesian Coordinates
+   :type geo: 2D array
+   :param a: label of atom A
+   :type a: int
+   :param b: label of central atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: torsion(geo, a, b, c, d)
+
+   Calculates the torsion internal coordinate between n atoms A, atom B,
+   atom C and m atoms D
+
+   :param geo: _description_
+   :type geo: 2D array
+   :param a: list of labels for the n A-type atoms
+   :type a: list
+   :param b: label of atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+   :param d: list of labels for the m D-type atoms
+   :type d: list
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: wag(geo, a, b, c, d)
+
+   Calculates the out-of plane wag for the plane defined by atoms A, C
+   and D
+
+   :param geo: molecular geometry in Cartesian coordinates
+   :type geo: 2D array
+   :param a: label of central atom A
+   :type a: int
+   :param b: label of atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+   :param d: label of atom D
+   :type d: int
+
+   :returns: a row of the B matrix
+   :rtype: 1D array
+
+
+.. py:function:: linear(geo, a, b, c, deg=True)
+
+   Calculates the angle bending internal coordinate between atoms
+   a-b-c for linear coordinates
+
+   :param geo: molecular geometry in Cartesian Coordinates
+   :type geo: 2D array
+   :param a: label of atom A
+   :type a: int
+   :param b: label of central atom B
+   :type b: int
+   :param c: label of atom C
+   :type c: int
+   :param deg: True for degenerate states
+   :type deg: bool
+
+   :returns: a row of the B matrix, two rows if deg = True
+   :rtype: 1D array
+
+
+.. py:class:: Molecule(atoms, positions)
+
+   Defines the molecule class. It stores all the relevant data for the IQA/CCTDP analysis
+
+
+   .. py:method:: read_gaussian(cls, file)
+      :classmethod:
+
+
+
+.. py:data:: atomic_mass
+   
+
+   
+
+.. py:data:: constants
+   
+
+   
+
+.. py:function:: get_electronic(file)
+
+   Reads atomic charge and dipoles from aimall output
+
+   :param file: .int file path
+   :type file: str
+
+   :returns: atomic charge
+             dipole_x (float): x component of atomic dipole
+             dipole_y (float): y component of atomic dipole
+             dipole_z (float): z component of atomic dipole
+   :rtype: charge (float)
+
+
+.. py:function:: normal_modes(atoms, H_iqa)
+
+   Calculates the normal modes of vibration from the IQA 3D-Hessian matrix
+
+   :param atoms: list of atoms in the system
+   :type atoms: list
+   :param H_iqa: 3D Hessian calculated with IQA contributions
+   :type H_iqa: 3D array
+
+   :returns: normal modes matrix. Each column contrains the displacement of atoms for a normal coordinate
+             list: frequencies of vibration
+             3D array: IQA partitioning of frequencies
+             list: list of IQA terms
+   :rtype: 2D array
+
+
+.. py:function:: intensities(atoms, coords, normal_coordinates, folder, delta)
+
+   Calculates the infrared intensities and CCTDP contributions from AIM charges and dipoles
+
+   :param atoms: list of .int files (AIMAll outputs)
+   :type atoms: list
+   :param coords: Cartesian coordinates
+   :type coords: 2D array
+   :param normal_coordinates: normal coordinates matrix
+   :type normal_coordinates: 2D array
+   :param folder: list of AIMAll _atomicfiles folders
+   :type folder: list
+   :param delta: displacement value that generated the non-equilibrium geometries
+   :type delta: float
+
+   :returns: infrared intensities
+             2D array: Charge (C) contribution
+             2D array: Charge-Transfer (CT) contribution
+             2D array: Dipolar Polarization (DP) contribution
+   :rtype: list
+
+
+.. py:function:: vector_to_square(vector)
+
+   Takes a vector and returns a diagonal matrix.
+
+   :param vector: column matrix
+   :type vector: list or array
+
+   :returns: diagonal matrix
+   :rtype: array
+
+
+.. py:function:: gen_A_matrix(n)
+
+   Generates the transformation matrix A
+
+   :param n: number of atoms
+   :type n: int
+
+   :returns: transformation matrix
+   :rtype: array
+
+
+.. py:function:: gen_block_identity(n)
+
+   Generates a block indentity matrix
+
+   :param n: number of atoms
+   :type n: int
+
+   :returns: block diagonal matrix
+   :rtype: array
+
+
+.. py:function:: invert_B(B, M)
+
+   Inverts the B matrix.
+
+   :param B: matrix that converts Cartesian to internal coordinates
+   :type B: matrix
+   :param M: diagonal matrix of invese of atomic mass square root
+   :type M: _type_
+
+   :returns: Inverse of B
+   :rtype: matrix
+
+
+.. py:function:: hessian_from_iqa(atoms, folder, delta=0.05)
+
+   Generates the 3-dimensional Hessian matrix from the IQA terms.
+
+   :param atoms: list of atoms in the system
+   :type atoms: list
+   :param delta: displacement value that generated the non-equilibrium
+                 geometries
+   :type delta: float
+   :param folder: list of _atomicfiles (aimall outputs)
+   :type folder: list
+
+   :returns: 3D-Hessian matrix
+   :rtype: 3D array
+
+
+.. py:function:: convert_to_internal(atoms, B, H_iqa)
+
+   Converts the 3-D Hessian from Cartesian to Internal coordinates
+
+   :param atoms: list of atoms
+   :type atoms: list
+   :param B: B matrix -> converts from Cartesian to Internal coordinates
+   :type B: 2D array
+   :param H_iqa: 3D Hessian matrix in Cartesian coordinates
+   :type H_iqa: 3D array
+
+   :returns: 3D Hessian in internal coordinates
+   :rtype: 3D array
+
+
+.. py:function:: get_IQA(atomicfiles, atoms)
+
+   Reads IQA terms from AIMALL outputs
+
+   :param atomicfiles: List of atomicfiles folder from AIMAll output
+   :type atomicfiles: str
+   :param atoms: List of atoms in the system
+   :type atoms: array
+
+   :returns: Arrays containing E_intra, Vcl and Vxc IQA contributions
+   :rtype: np.array
+
+
+.. py:function:: get_energy_from_wfn(file)
+
+   Reads energy value from Gaussian's wavefunction file
+
+   :param file: file path
+   :type file: str
+
+   :returns: energy eigenvalue from the wavefunction (Hartree)
+   :rtype: float
+
+
+.. py:data:: atomic_mass
+   
+
+   
+
+.. py:data:: constants
+   
+
+   
+
+.. py:function:: vector_to_square(vector)
+
+   Takes a vector and returns a diagonal matrix.
+
+   :param vector: column matrix
+   :type vector: list or array
+
+   :returns: diagonal matrix
+   :rtype: array
+
+
+.. py:function:: gen_A_matrix(n)
+
+   Generates the transformation matrix A
+
+   :param n: number of atoms
+   :type n: int
+
+   :returns: transformation matrix
+   :rtype: array
+
+
+.. py:function:: gen_block_identity(n)
+
+   Generates a block indentity matrix
+
+   :param n: number of atoms
+   :type n: int
+
+   :returns: block diagonal matrix
+   :rtype: array
+
+
+.. py:function:: invert_B(B, M)
+
+   Inverts the B matrix.
+
+   :param B: matrix that converts Cartesian to internal coordinates
+   :type B: matrix
+   :param M: diagonal matrix of invese of atomic mass square root
+   :type M: _type_
+
+   :returns: Inverse of B
+   :rtype: matrix
+
+
+.. py:function:: hessian_from_iqa(atoms, folder, delta=0.05)
+
+   Generates the 3-dimensional Hessian matrix from the IQA terms.
+
+   :param atoms: list of atoms in the system
+   :type atoms: list
+   :param delta: displacement value that generated the non-equilibrium
+                 geometries
+   :type delta: float
+   :param folder: list of _atomicfiles (aimall outputs)
+   :type folder: list
+
+   :returns: 3D-Hessian matrix
+   :rtype: 3D array
+
+
+.. py:function:: convert_to_internal(atoms, B, H_iqa)
+
+   Converts the 3-D Hessian from Cartesian to Internal coordinates
+
+   :param atoms: list of atoms
+   :type atoms: list
+   :param B: B matrix -> converts from Cartesian to Internal coordinates
+   :type B: 2D array
+   :param H_iqa: 3D Hessian matrix in Cartesian coordinates
+   :type H_iqa: 3D array
+
+   :returns: 3D Hessian in internal coordinates
+   :rtype: 3D array
+
+
+.. py:data:: atomic_mass
+   
+
+   
+
+.. py:data:: constants
+   
+
+   
+
+.. py:function:: get_IQA(atomicfiles, atoms)
+
+   Reads IQA terms from AIMALL outputs
+
+   :param atomicfiles: List of atomicfiles folder from AIMAll output
+   :type atomicfiles: str
+   :param atoms: List of atoms in the system
+   :type atoms: array
+
+   :returns: Arrays containing E_intra, Vcl and Vxc IQA contributions
+   :rtype: np.array
+
+
+.. py:function:: get_energy_from_wfn(file)
+
+   Reads energy value from Gaussian's wavefunction file
+
+   :param file: file path
+   :type file: str
+
+   :returns: energy eigenvalue from the wavefunction (Hartree)
+   :rtype: float
+
+
+.. py:function:: get_electronic(file)
+
+   Reads atomic charge and dipoles from aimall output
+
+   :param file: .int file path
+   :type file: str
+
+   :returns: atomic charge
+             dipole_x (float): x component of atomic dipole
+             dipole_y (float): y component of atomic dipole
+             dipole_z (float): z component of atomic dipole
+   :rtype: charge (float)
+
+
+.. py:data:: __version__
+   
+
+   
+

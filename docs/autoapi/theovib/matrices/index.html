@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>theovib.matrices &#8212; Theovib  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-theovib.matrices">
+<span id="theovib-matrices"></span><h1><a class="reference internal" href="#module-theovib.matrices" title="theovib.matrices"><code class="xref py py-mod docutils literal notranslate"><span class="pre">theovib.matrices</span></code></a><a class="headerlink" href="#module-theovib.matrices" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#theovib.matrices.vector_to_square" title="theovib.matrices.vector_to_square"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_to_square</span></code></a>(vector)</p></td>
+<td><p>Takes a vector and returns a diagonal matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#theovib.matrices.gen_A_matrix" title="theovib.matrices.gen_A_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_A_matrix</span></code></a>(n)</p></td>
+<td><p>Generates the transformation matrix A</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#theovib.matrices.gen_block_identity" title="theovib.matrices.gen_block_identity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_block_identity</span></code></a>(n)</p></td>
+<td><p>Generates a block indentity matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#theovib.matrices.invert_B" title="theovib.matrices.invert_B"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert_B</span></code></a>(B, M)</p></td>
+<td><p>Inverts the B matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#theovib.matrices.hessian_from_iqa" title="theovib.matrices.hessian_from_iqa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hessian_from_iqa</span></code></a>(atoms, folder, delta=0.05)</p></td>
+<td><p>Generates the 3-dimensional Hessian matrix from the IQA terms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#theovib.matrices.convert_to_internal" title="theovib.matrices.convert_to_internal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_internal</span></code></a>(atoms, B, H_iqa)</p></td>
+<td><p>Converts the 3-D Hessian from Cartesian to Internal coordinates</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="theovib.matrices.vector_to_square">
+<span class="sig-prename descclassname"><span class="pre">theovib.matrices.</span></span><span class="sig-name descname"><span class="pre">vector_to_square</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#theovib.matrices.vector_to_square" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a vector and returns a diagonal matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vector</strong> (<em>list</em><em> or </em><em>array</em>) – column matrix</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>diagonal matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="theovib.matrices.gen_A_matrix">
+<span class="sig-prename descclassname"><span class="pre">theovib.matrices.</span></span><span class="sig-name descname"><span class="pre">gen_A_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#theovib.matrices.gen_A_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the transformation matrix A</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – number of atoms</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>transformation matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="theovib.matrices.gen_block_identity">
+<span class="sig-prename descclassname"><span class="pre">theovib.matrices.</span></span><span class="sig-name descname"><span class="pre">gen_block_identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#theovib.matrices.gen_block_identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a block indentity matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – number of atoms</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>block diagonal matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="theovib.matrices.invert_B">
+<span class="sig-prename descclassname"><span class="pre">theovib.matrices.</span></span><span class="sig-name descname"><span class="pre">invert_B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#theovib.matrices.invert_B" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverts the B matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>B</strong> (<em>matrix</em>) – matrix that converts Cartesian to internal coordinates</p></li>
+<li><p><strong>M</strong> (<em>_type_</em>) – diagonal matrix of invese of atomic mass square root</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Inverse of B</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="theovib.matrices.hessian_from_iqa">
+<span class="sig-prename descclassname"><span class="pre">theovib.matrices.</span></span><span class="sig-name descname"><span class="pre">hessian_from_iqa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#theovib.matrices.hessian_from_iqa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the 3-dimensional Hessian matrix from the IQA terms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms</strong> (<em>list</em>) – list of atoms in the system</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – displacement value that generated the non-equilibrium
+geometries</p></li>
+<li><p><strong>folder</strong> (<em>list</em>) – list of _atomicfiles (aimall outputs)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3D-Hessian matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>3D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="theovib.matrices.convert_to_internal">
+<span class="sig-prename descclassname"><span class="pre">theovib.matrices.</span></span><span class="sig-name descname"><span class="pre">convert_to_internal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_iqa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#theovib.matrices.convert_to_internal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the 3-D Hessian from Cartesian to Internal coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms</strong> (<em>list</em>) – list of atoms</p></li>
+<li><p><strong>B</strong> (<em>2D array</em>) – B matrix -&gt; converts from Cartesian to Internal coordinates</p></li>
+<li><p><strong>H_iqa</strong> (<em>3D array</em>) – 3D Hessian matrix in Cartesian coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3D Hessian in internal coordinates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>3D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Theovib</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, L. J. Duarte.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/theovib/matrices/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

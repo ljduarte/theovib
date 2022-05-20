@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>theovib.ir &#8212; Theovib  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Theovib  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">theovib.ir</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for theovib.ir</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">theovib.ptable</span> <span class="kn">import</span> <span class="n">atomic_mass</span><span class="p">,</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">theovib.aimall_tools</span> <span class="kn">import</span> <span class="n">get_electronic</span>
+<span class="kn">from</span> <span class="nn">theovib.matrices</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">matmul</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span><span class="p">,</span> <span class="n">array</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">STEP II: Normal mode analysis </span>
+<span class="sd">convention: all matrix are represented by a capital letter ans small letters ate subscripts</span>
+<span class="sd">H -&gt; Hessian in cartesian coordinates [Hartree/Bohr]</span>
+<span class="sd">H_iqa -&gt; 3D matrix where each layes correspond to an IQA energy value </span>
+<span class="sd">M -&gt; contain the reciprocal of the atomic mass square root   </span>
+<span class="sd">M_t -&gt; the transpose of M (since M is a diagonal matrix, M_t = M)</span>
+<span class="sd">H_mw -&gt; mass weighted Hessian [Hartree/(bohr.amu)]</span>
+<span class="sd">L -&gt; matrix that diagonalize H_mw. It contains theeigenvectors of H_mw</span>
+<span class="sd">L_i -&gt; the invese of L</span>
+<span class="sd">L_mw -&gt; normal coordinates = M.L</span>
+<span class="sd">Lambda_iqa -&gt; 3D matricex where each layer correspond to L_i multiplied by the same layer of H_iqa</span>
+<span class="sd">Lambda -&gt; diagonal matrix of the eigenvalues of H_mw</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="normal_modes"><a class="viewcode-back" href="../../autoapi/theovib/ir/index.html#theovib.ir.normal_modes">[docs]</a><span class="k">def</span> <span class="nf">normal_modes</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">H_iqa</span><span class="p">):</span>
+    <span class="n">number_of_terms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H_iqa</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Setting up the M matrix (construct the 1/sqrt(M) diagonal matrix) unit: [amu^-(1/2)]</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)):</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomic_mass</span><span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">)]]</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+    
+    <span class="c1">#Calculate mass weighted Hessian [H_mw]: H_mw = M_t H M = M H M</span>
+    <span class="n">H_mw</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">matmul</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">H</span><span class="p">),</span> <span class="n">M</span><span class="p">)</span>
+    
+    <span class="c1">#Calculate mass weighted Hessian IQA = [H_iqa_mw]</span>
+    <span class="n">H_iqa_mw</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="n">number_of_terms</span><span class="p">])</span> <span class="c1">#initialize the 3D matrix</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_terms</span><span class="p">):</span>
+        <span class="n">H_iqa_mw</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">matmul</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">H_iqa</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]),</span> <span class="n">M</span><span class="p">)</span>
+    
+    <span class="c1">#Calculate L (the eigenvectors of H_mw) and its inverse matrix</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">H_mw</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">L_i</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    
+    <span class="c1">#Use L and L_i to calculate Lambda_iqa</span>
+    <span class="n">Lambda_iqa</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="n">number_of_terms</span><span class="p">])</span> <span class="c1">#initialize the 3D matrix</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_terms</span><span class="p">):</span>
+        <span class="n">Lambda_iqa</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span>  <span class="n">matmul</span><span class="p">(</span><span class="n">matmul</span><span class="p">(</span><span class="n">L_i</span><span class="p">,</span> <span class="n">H_iqa_mw</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]),</span> <span class="n">L</span><span class="p">)</span>
+    
+    <span class="n">L_mw</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span> <span class="c1">#the eigenvalues need to be ajusted by the atomic mass</span>
+    <span class="c1">#Calculate Lambda</span>
+    <span class="n">Lambda</span> <span class="o">=</span> <span class="n">Lambda_iqa</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># generate list of interactions keeping the reading order</span>
+    <span class="n">atom_label</span> <span class="o">=</span> <span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">))]</span>
+    <span class="n">iqa_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;E_intra&quot;</span> <span class="o">+</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">atom_label</span><span class="p">]</span>
+    <span class="n">atom_int_label</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)):</span>
+            <span class="n">atom_int_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>  <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">atoms</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">iqa_list</span> <span class="o">=</span> <span class="n">iqa_list</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;V_cl&quot;</span> <span class="o">+</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span><span class="s1">&#39;)&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">atom_int_label</span><span class="p">]</span>
+    <span class="n">iqa_list</span> <span class="o">=</span> <span class="n">iqa_list</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;V_xc&quot;</span> <span class="o">+</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span><span class="s1">&#39;)&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">atom_int_label</span><span class="p">]</span>
+
+    <span class="c1">#Separate the vibrational eigenvalues and calculate frequencies.</span>
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#initialize frequencies list</span>
+    <span class="n">frequencies_iqa</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#initialize frequencies contributions list</span>
+    <span class="n">normal_coordinates</span> <span class="o">=</span><span class="p">[]</span> <span class="c1">#initialize normal vectors list</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">atoms</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">Lambda</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.0005</span><span class="p">:</span> <span class="c1">#treshold for rotacional and translational normal modes</span>
+            <span class="n">frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">constants</span><span class="p">[</span><span class="s1">&#39;k_cm&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">Lambda</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">constants</span><span class="p">[</span><span class="s1">&#39;k_pi&#39;</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">normal_coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">L_mw</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">frequencies_iqa</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Lambda_iqa</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">,:])</span>
+    
+    <span class="k">return</span> <span class="n">normal_coordinates</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">frequencies_iqa</span><span class="p">,</span> <span class="n">iqa_list</span></div>
+
+<div class="viewcode-block" id="intensities"><a class="viewcode-back" href="../../autoapi/theovib/ir/index.html#theovib.ir.intensities">[docs]</a><span class="k">def</span> <span class="nf">intensities</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">normal_coordinates</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    STEP IIII: Eletronic properties and infrared intensities. </span>
+<span class="sd">    C = charge tensor</span>
+<span class="sd">    CT = charge transfer tensor</span>
+<span class="sd">    DP = dipolar polarization tensor</span>
+<span class="sd">    C_prime = temporary charge derivative tensor</span>
+<span class="sd">    X = vector of Cartesian coordinates</span>
+<span class="sd">    X_block =square matrix of the Cartesian coordenates instances of X side by side</span>
+<span class="sd">    A = Tranformation matrix</span>
+<span class="sd">    AX = Hadamard product (element-wise) of the transpose of X_block and A</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#initialize matrices</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)])</span>  <span class="c1">#charge</span>
+    <span class="n">C_prime</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)])</span> <span class="c1">#charge_derivative (temporary)</span>
+    <span class="n">CT</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)])</span> <span class="c1">#charge transfer</span>
+    <span class="n">DP</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)])</span> <span class="c1">#dipolar polarization</span>
+
+    <span class="n">int_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.int&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">))]</span> <span class="c1">#list of int files</span>
+    <span class="c1"># generate the matrix of charge tensors</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">int_files</span><span class="p">)):</span>
+        <span class="n">charge</span> <span class="o">=</span> <span class="n">get_electronic</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s2">&quot;/EQ_atomicfiles/&quot;</span><span class="o">+</span> <span class="n">int_files</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">C</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">charge</span>
+        <span class="n">C</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">charge</span>
+        <span class="n">C</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">charge</span>
+
+    <span class="c1"># generate the CT and DP tensors matrix</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">atoms</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)):</span>
+            <span class="n">Electronic_A</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">get_electronic</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_A_atomicfiles/&#39;</span> <span class="o">+</span> <span class="n">int_files</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span> <span class="c1">#Point A  </span>
+            <span class="n">Electronic_B</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">get_electronic</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_B_atomicfiles/&#39;</span> <span class="o">+</span> <span class="n">int_files</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span> <span class="c1">#Ponit B</span>
+            <span class="n">derivative</span> <span class="o">=</span> <span class="p">(</span> <span class="n">Electronic_A</span> <span class="o">-</span> <span class="n">Electronic_B</span> <span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>
+            <span class="n">C_prime</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">,</span> <span class="n">i</span><span class="p">]</span>  <span class="o">=</span>  <span class="n">derivative</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>      
+            <span class="n">DP</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">),</span> <span class="n">i</span><span class="p">]</span>  <span class="o">=</span>  <span class="n">DP</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">),</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">derivative</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">0.529177</span>
+            <span class="n">DP</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">DP</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">derivative</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="mf">0.529177</span>
+            <span class="n">DP</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">DP</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">derivative</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">0.529177</span>
+
+    <span class="c1">#write Cartesians Coordinates in the vector form</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">X</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="n">X_block</span> <span class="o">=</span> <span class="n">vector_to_square</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1">#concatenate vector X into a square matrix</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">gen_A_matrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">))</span> <span class="c1">#generate transformation matrx</span>
+    <span class="n">XA</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">X_block</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="c1"># Hadamard product (element-wise)</span>
+    <span class="n">CT</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">XA</span><span class="p">,</span> <span class="n">C_prime</span><span class="p">)</span><span class="o">*</span><span class="n">gen_block_identity</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">))</span> <span class="c1"># obtain the charge transfer tensor matrix</span>
+
+    <span class="n">Atom_tensor</span> <span class="o">=</span> <span class="n">C</span> <span class="o">+</span> <span class="n">CT</span><span class="o">+</span> <span class="n">DP</span> <span class="c1"># calculate the atomic tensors matrix: C + CT + DP</span>
+    <span class="n">intensities</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># initialize vector to store the intensities</span>
+
+    <span class="c1">#obtain intensities by multiplying the atomic tensors matrix by the normal coordinates and summing all elements</span>
+    <span class="k">for</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">normal_coordinates</span><span class="p">:</span>
+        <span class="n">intensities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">constants</span><span class="p">[</span><span class="s1">&#39;k_int&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">matmul</span><span class="p">(</span><span class="n">Atom_tensor</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#calculate infrared intensities</span>
+
+    <span class="k">return</span> <span class="n">intensities</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">CT</span><span class="p">,</span> <span class="n">DP</span></div>
+
+
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Theovib  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">theovib.ir</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, L. J. Duarte.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>

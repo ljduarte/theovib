@@ -1,0 +1,101 @@
+:py:mod:`theovib.matrices`
+==========================
+
+.. py:module:: theovib.matrices
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   theovib.matrices.vector_to_square
+   theovib.matrices.gen_A_matrix
+   theovib.matrices.gen_block_identity
+   theovib.matrices.invert_B
+   theovib.matrices.hessian_from_iqa
+   theovib.matrices.convert_to_internal
+
+
+
+.. py:function:: vector_to_square(vector)
+
+   Takes a vector and returns a diagonal matrix.
+
+   :param vector: column matrix
+   :type vector: list or array
+
+   :returns: diagonal matrix
+   :rtype: array
+
+
+.. py:function:: gen_A_matrix(n)
+
+   Generates the transformation matrix A
+
+   :param n: number of atoms
+   :type n: int
+
+   :returns: transformation matrix
+   :rtype: array
+
+
+.. py:function:: gen_block_identity(n)
+
+   Generates a block indentity matrix
+
+   :param n: number of atoms
+   :type n: int
+
+   :returns: block diagonal matrix
+   :rtype: array
+
+
+.. py:function:: invert_B(B, M)
+
+   Inverts the B matrix.
+
+   :param B: matrix that converts Cartesian to internal coordinates
+   :type B: matrix
+   :param M: diagonal matrix of invese of atomic mass square root
+   :type M: _type_
+
+   :returns: Inverse of B
+   :rtype: matrix
+
+
+.. py:function:: hessian_from_iqa(atoms, folder, delta=0.05)
+
+   Generates the 3-dimensional Hessian matrix from the IQA terms.
+
+   :param atoms: list of atoms in the system
+   :type atoms: list
+   :param delta: displacement value that generated the non-equilibrium
+                 geometries
+   :type delta: float
+   :param folder: list of _atomicfiles (aimall outputs)
+   :type folder: list
+
+   :returns: 3D-Hessian matrix
+   :rtype: 3D array
+
+
+.. py:function:: convert_to_internal(atoms, B, H_iqa)
+
+   Converts the 3-D Hessian from Cartesian to Internal coordinates
+
+   :param atoms: list of atoms
+   :type atoms: list
+   :param B: B matrix -> converts from Cartesian to Internal coordinates
+   :type B: 2D array
+   :param H_iqa: 3D Hessian matrix in Cartesian coordinates
+   :type H_iqa: 3D array
+
+   :returns: 3D Hessian in internal coordinates
+   :rtype: 3D array
+
+
