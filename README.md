@@ -1,6 +1,18 @@
 # theovib
+[![GitHub issues](https://img.shields.io/github/issues/ljduarte/theovib)](https://github.com/ljduarte/theovib/issues)
+[![GitHub forks](https://img.shields.io/github/forks/ljduarte/theovib)](https://github.com/ljduarte/theovib/network)
+[![GitHub stars](https://img.shields.io/github/stars/ljduarte/theovib)](https://github.com/ljduarte/theovib/stargazers)
+[![GitHub license](https://img.shields.io/github/license/ljduarte/theovib)](https://github.com/ljduarte/theovib/blob/main/LICENSE)
 
-A package for molecular vibrations analysis
+:construction: Version 0.0.1 :construction:
+A package for molecular vibrations analysis. This initial version contains functions to solve the vibrational problem starting from the Hessian matrix or from a 3D-Hessian construct from Interacting Quantum Atoms energy decomposition scheme. 
+Infrared intensities are obtained from atomic charges and dipoles obtained by AIMAll.   
+
+## Contents
+[Installation](#Installation)
+[Usage](#Usage)
+[Contributing](#Contributing)
+[License](#License)
 
 ## Installation
 
