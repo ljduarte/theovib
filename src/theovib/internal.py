@@ -2,6 +2,8 @@ import numpy as np
 """Functions that calculate the internal coordinates from Cartesian 
 coordinates
 """
+
+
 def bond(geo, a, b):
     """Calculates the bond stretch internal coordinate between a and b 
     in the molecule
@@ -13,7 +15,7 @@ def bond(geo, a, b):
 
     Returns:
         1D array: a row of the B matrix
-    """    
+    """
     v = (geo[a-1]-geo[b-1])/np.linalg.norm(geo[a-1]-geo[b-1])
     b_row = np.zeros(3*len(geo))
     b_row[3*a-3] = v[0]
@@ -24,6 +26,7 @@ def bond(geo, a, b):
     b_row[3*b-1] = -v[2]
 
     return b_row
+
 
 def angle(geo, a, b, c):
     """Calculates the angle bending internal coordinate between atoms 
@@ -61,8 +64,9 @@ def angle(geo, a, b, c):
     b_row[3*b-3] = -(u1[0]+u2[0])
     b_row[3*b-2] = -(u1[1]+u2[1])
     b_row[3*b-1] = -(u1[2]+u2[2])
- 
+
     return b_row
+
 
 def torsion(geo, a, b, c, d):
     """Calculates the torsion internal coordinate between n atoms A, atom B, 
@@ -119,6 +123,7 @@ def torsion(geo, a, b, c, d):
 
     return b_row
 
+
 def wag(geo, a, b, c, d):
     """Calculates the out-of plane wag for the plane defined by atoms A, C 
     and D
@@ -132,7 +137,7 @@ def wag(geo, a, b, c, d):
 
     Returns:
         1D array: a row of the B matrix
-    """    
+    """
     b_row = np.zeros(3*len(geo))
     vab = geo[a-1]-geo[b-1]
     rab = np.linalg.norm(vab)
@@ -168,6 +173,7 @@ def wag(geo, a, b, c, d):
 
     return b_row
 
+
 def linear(geo, a, b, c, deg=True):
     """Calculates the angle bending internal coordinate between atoms 
     a-b-c for linear coordinates
@@ -189,7 +195,7 @@ def linear(geo, a, b, c, deg=True):
     r2 = np.linalg.norm(v2)
 
     u = np.array([1, 1, -(v1[0]+v1[1])/v1[2]])
-    u = u/np.linalg.norm(u)     
+    u = u/np.linalg.norm(u)
 
     ua = u/r1
     uc = u/r2
@@ -203,7 +209,7 @@ def linear(geo, a, b, c, deg=True):
     b_row[3*c-3] = uc[0]
     b_row[3*c-2] = uc[1]
     b_row[3*c-1] = uc[2]
-  
+
     if deg == True:
         b_row = np.array([b_row, np.zeros(3*len(geo))])
         v = np.cross(u, v1)

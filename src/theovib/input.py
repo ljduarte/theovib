@@ -1,3 +1,6 @@
+"""Reads a .txt input generating the B matrix. 
+    """
+
 
 def find(str, ch):
     indexes = []
@@ -9,6 +12,9 @@ def find(str, ch):
 
 
 class Input:
+    """Stores the input information
+    """
+
     def __init__(self):
         self.molecule = None
         self.folder = None

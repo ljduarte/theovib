@@ -1,9 +1,13 @@
 """Define the "Molecule" class.
 """
 #import os
-import numpy as np 
+import numpy as np
+
 
 class Molecule:
+    """Defines the molecule class. It stores all the relevant data for the IQA/CCTDP analysis
+    """
+
     def __init__(self, atoms, positions):
         self.atoms = atoms
         self.positions = positions
