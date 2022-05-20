@@ -18,6 +18,8 @@ Infrared intensities are obtained from atomic charges and dipoles obtained by AI
 
 [Contributing](#Contributing)
 
+[Documentation](#Documentation)
+
 [License](#License)
 
 ## Installation
@@ -174,6 +176,9 @@ $\mathbf{L_k}$ is the $k^{th}$ column of $\mathbf{L}$. $\mathbf{U}$ is a $1 \tim
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+
+## Documentation
+https://ljduarte.github.io/theovib/
 
 ## License
 
