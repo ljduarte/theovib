@@ -28,10 +28,24 @@ $ pip install theovib
 ```
 
 ## Usage
-You can perform a vibrational analysis for water using the files in the "example" folder.
+You can perform a vibrational analysis for water using the files in the **"example"** folder.
 
 ### Vibrational analysis of the Water molecule
-In ./example/h2o you will find all single point calculations needed to generate the 3D-Hessian matrix.
+In **./example/h2o** you will find all single point calculations needed to generate the 3D-Hessian matrix.
+
+The Cartesian coordinates of the water molecule are:
+
+| **Atom(Label)** |    **X** |     **Y** |     **Z** |
+|-----------------|---------:|----------:|----------:|
+| O(1)            | 0.000000 |  0.000000 |  0.004316 |
+| H(2)            | 0.000000 | -0.763369 | -0.580667 |
+| H(3)            | 0.000000 |  0.763369 | -0.580667 |
+
+The internal coordinates are defined as:
+
+**bond** between atoms **1** and **2**
+**bond** between atoms **1** and **3**
+**angle** defined by atoms **1**, **2** and **3**
 
 We start writing the input file:
 
@@ -50,6 +64,9 @@ ANGLE:
 2 1 3
 ---
 ```
+
+**DELTA** is the displacement that generated the non-equilibrium geometries.
+
 
 ## Contributing
 
