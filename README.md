@@ -153,7 +153,7 @@ where $\mathbf{D}$ and $\mathbf{\Phi}$ are, respectively, the eigenvectors and t
 
 $$\mathbf{F} ={\mathbf{B}^{\dagger}}^{-1} \mathbf{H}\mathbf{B}^{-1}$$   
 
-The decomposition of the force constants into the IQA contributions is done using Equation \ref{eq: iqa_derivattive}:
+The decomposition of the force constants into the IQA contributions is done using:
 
 $$ \left[\sum_{k=1}^{N^2} \mathbf{F^{IQA}_k}\right] ={\mathbf{B}^{\dagger}}^{-1} \left[\sum_{k=1}^{N^2} \mathbf{H^{IQA}_k}\right] \mathbf{B}^{-1} $$
 
