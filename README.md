@@ -20,9 +20,6 @@ Infrared intensities are obtained from atomic charges and dipoles obtained by AI
 
 [License](#License)
 
-
-
-
 ## Installation
 
 To install, just use pip:
