@@ -9,10 +9,10 @@ A package for molecular vibrations analysis. This initial version contains funct
 Infrared intensities are obtained from atomic charges and dipoles obtained by AIMAll.   
 
 ## Contents
-[Installation](#Installation)
-[Usage](#Usage)
-[Contributing](#Contributing)
-[License](#License)
+[Installation](#Installation)\\
+[Usage](#Usage)\\
+[Contributing](#Contributing)\\
+[License](#License)\\
 
 ## Installation
 
