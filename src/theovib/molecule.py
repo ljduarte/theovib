@@ -7,10 +7,10 @@ import numpy as np
 class Molecule:
     """Defines the molecule class. It stores all the relevant data for the IQA/CCTDP analysis
     """
-    def __init__(self, atoms, positions):
+    def __init__(self, atoms, positions, charge_mult, **kwargs):
         self.atoms = atoms
         self.positions = positions
-        self.charge_mult = None
+        self.charge_mult = charge_mult 
         self.b_matrix = None
         self.hessian = None
         self.iqa_hessian = None
@@ -26,26 +26,26 @@ class Molecule:
         self.dp_tensors = None
         self.internal_hessian = None
         self.iqa_forces = None
-        
-        #self.gaussian_path = gaussian_path
-        #self.aimall_path = aimall_path
-
 #    def __setattr__(self, __name: str, __value: Any) -> None:
 #       pass
+
     @classmethod
     def read_gaussian(cls, file):
         atoms = []
         positions = []
         f = open(file).readlines()
         for line in f:
+            if len(line.split()) == 2 and all(i not in line for i in ['#', '%']):
+                charge_mult = line.strip()
+        for line in f:
             if len(line.split()) == 4 and all(i not in line for i in ['#', '%']):
                 atoms.append(line.split()[0])
                 positions.append(np.array([float(line.split()[1]), float(
                     line.split()[2]), float(line.split()[3])]))
-        return(cls(atoms, positions))
+                
+        return(cls(atoms, positions, charge_mult))
     
-    @classmethod
-    def gen_geometries(cls, path, base_method, sigma=0.05):
+    def gen_geometries(self, path, base_method, sigma=0.05):
         def write_geo_aa(a, atoms, coords, charge_mult, delta, base_method, output):
             R = np.zeros(3*len(atoms))
             n=0
@@ -178,7 +178,6 @@ class Molecule:
             file.close()
             
             return None
-
         file = open(path + "EQ.com", 'w')
         print('%mem = 8GB', file = file)
         print('%nproc = 8', file = file)
@@ -186,20 +185,20 @@ class Molecule:
         print('', file = file)
         print('equilibirum_geometry', file = file)
         print('', file = file)
-        print(cls.charge_mult, file = file)
-        for i in range(len(cls.atoms)):
-            print(cls.atoms[i] +'    ' +str(cls.positions[i][0]) +'\t' +str(cls.positions[i][1]) +'\t ' +str(cls.positions[i][2]) , file = file)
+        print(self.charge_mult, file = file)
+        for i in range(len(self.atoms)):
+            print(self.atoms[i] +'    ' +str(self.positions[i][0]) +'\t' +str(self.positions[i][1]) +'\t ' +str(self.positions[i][2]) , file = file)
         print('', file = file)
         print('EQ.wfn', file = file)
         print('', file = file)
         file.close()
 
         ### Gerar input fora da diagonal
-        for a in range(1, 3*len(cls.atoms), 1):
+        for a in range(1, 3*len(self.atoms), 1):
             for b in range(0,  a, 1):
-                write_geo_ab(a, b, cls.atoms, cls.positions, sigma, base_method, path)
+                write_geo_ab(a, b, self.atoms, self.positions, self.charge_mult, sigma, base_method, path)
                 
-        for a in range(0, 3*len(cls.atoms), 1):
-            write_geo_aa(a, cls.atoms, cls.positions, sigma, base_method, path)
+        for a in range(0, 3*len(self.atoms), 1):
+            write_geo_aa(a, self.atoms, self.positions, self.charge_mult, sigma, base_method, path)
                
         return None
