@@ -7,10 +7,10 @@ import numpy as np
 class Molecule:
     """Defines the molecule class. It stores all the relevant data for the IQA/CCTDP analysis
     """
-
     def __init__(self, atoms, positions):
         self.atoms = atoms
         self.positions = positions
+        self.charge_mult = None
         self.b_matrix = None
         self.hessian = None
         self.iqa_hessian = None
@@ -26,6 +26,7 @@ class Molecule:
         self.dp_tensors = None
         self.internal_hessian = None
         self.iqa_forces = None
+        
         #self.gaussian_path = gaussian_path
         #self.aimall_path = aimall_path
 
@@ -42,27 +43,163 @@ class Molecule:
                 positions.append(np.array([float(line.split()[1]), float(
                     line.split()[2]), float(line.split()[3])]))
         return(cls(atoms, positions))
+    
+    @classmethod
+    def gen_geometries(cls, path, base_method, sigma=0.05):
+        def write_geo_aa(a, atoms, coords, charge_mult, delta, base_method, output):
+            R = np.zeros(3*len(atoms))
+            n=0
+            for i in range(len(atoms)):
+                for j in range(3):
+                    R[n] = coords[i][j]
+                    n=n+1
+            RA = np.array(R)
+            RB = np.array(R)
+            
+            RA[a] = RA[a] + delta
+            RB[a] = RB[a] - delta
+            
+            file = open(output + str(a) + "_" + str(a) +"_A.com", 'w')
+            print('%mem = 8GB', file = file)
+            print('%nproc = 8', file = file)
+            print('#' + base_method + ' density=current nosym output=wfn ', file = file)
+            print('', file = file)
+            print(str(a) + "_" + str(a) , file = file)
+            print('', file = file)
+            print(charge_mult, file = file)
+            for i in range(len(atoms)):
+                print(atoms[i] +'    ' +str(RA[3*i]) +'\t' + str(RA[3*i+1]) +'\t' +str(RA[3*i+2]) , file = file)  
+            print('', file = file)
+            print(str(a) + "_" + str(a) + '_A.wfn', file = file)
+            print('', file = file)
+            file.close()
+            
+            file = open(output + str(a) + "_" + str(a) +"_B.com", 'w')
+            print('%mem = 8GB', file = file)
+            print('%nproc = 8', file = file)
+            print('#' + base_method + ' density=current nosym output=wfn ', file = file)
+            print('', file = file)
+            print(str(a) + "_" + str(a) , file = file)
+            print('', file = file)
+            print(charge_mult, file = file)
+            for i in range(len(atoms)):
+                print(atoms[i] +'    ' +str(RB[3*i]) +'\t' + str(RB[3*i+1]) +'\t' +str(RB[3*i+2]) , file = file)  
+            print('', file = file)
+            print(str(a) + "_" + str(a) + '_B.wfn', file = file)
+            print('', file = file)
+            file.close()
+            
+            return None
 
-#   def opt(self, nproc, mem,  method, base, charge, mult):
-#       f = open('molecule.gjf', 'w')
-#       print('%%nproc = %i ' %(nproc), file=f)
-#       print('%%mem = %i GB ' %(mem), file=f)
-#       print('', file=f)
-#       print('#opt %s %s density=current nosymm'%(method, base), file=f)
-#       print('', file=f)
-#       print('optimization', file=f)
-#       print('', file=f)
-#       print('%i %i'%(charge, mult), file=f)
-#       for i in range(len(self.atoms)):
-#          print('%s %.5f %.5f %.5f'%(self.atoms[i], self.positions[i][0], self.positions[i][1], self.positions[i][2]), file=f)
-#      print('', file=f)
-#      f.close()
+        def write_geo_ab(a, b, atoms, coords, charge_mult, delta, base_method, output):
+            ## Converter coordenadas num vetor
+            R = np.zeros(3*len(atoms))
+            n=0
+            for i in range(len(atoms)):
+                for j in range(3):
+                    R[n] = coords[i][j]
+                    n=n+1
+            RA = np.array(R)
+            RB = np.array(R)
+            RC = np.array(R)
+            RD = np.array(R)
 
-#      os.system(self.gaussian_path + '  molecule.gjf')
+            RA[a] = RA[a] + delta
+            RA[b] = RA[b] + delta
 
-#  def freq(nproc, mem, base, method, charge, mult):
-#   def sp(nproc, mem, base, method, charge, mult):
+            RB[a] = RB[a] + delta
+            RB[b] = RB[b] - delta
+            
+            RC[a] = RC[a] - delta
+            RC[b] = RC[b] + delta
+            
+            RD[a] = RD[a] - delta
+            RD[b] = RD[b] - delta
+        
+            # a e b sÃ£o indices das coordenadas
+            file = open(output + str(a) + "_" + str(b) +"_A.com", 'w')
+            print('%mem = 8GB', file = file)
+            print('%nproc = 8', file = file)
+            print('#' + base_method + ' density=current nosym output=wfn ', file = file)
+            print('', file = file)
+            print(str(a) + "_" + str(b) , file = file)
+            print('', file = file)
+            print(charge_mult, file = file)
+            for i in range(len(atoms)):
+                print(atoms[i] +'    ' +str(RA[3*i]) +'\t' + str(RA[3*i+1]) +'\t' +str(RA[3*i+2]) , file = file)  
+            print('', file = file)
+            print(str(a) + "_" + str(b) + '_A.wfn', file = file)
+            print('', file = file)
+            file.close()
+            
+            file = open(output + str(a) + "_" + str(b) +"_B.com", 'w')
+            print('%mem = 8GB', file = file)
+            print('%nproc = 8', file = file)
+            print('#' + base_method + ' density=current nosym output=wfn ', file = file)
+            print('', file = file)
+            print(str(a) + "_" + str(b) , file = file)
+            print('', file = file)
+            print(charge_mult, file = file)
+            for i in range(len(atoms)):
+                print(atoms[i] +'    ' +str(RB[3*i]) +'\t' + str(RB[3*i+1]) +'\t' +str(RB[3*i+2]) , file = file)  
+            print('', file = file)
+            print(str(a) + "_" + str(b) + '_B.wfn', file = file)
+            print('', file = file)
+            file.close()
+            
+            file = open(output + str(a) + "_" + str(b) +"_C.com", 'w')
+            print('%mem = 8GB', file = file)
+            print('%nproc = 8', file = file)
+            print('#' + base_method + ' density=current nosym output=wfn  ', file = file)
+            print('', file = file)
+            print(str(a) + "_" + str(b) , file = file)
+            print('', file = file)
+            print(charge_mult, file = file)
+            for i in range(len(atoms)):
+                print(atoms[i] +'    ' +str(RC[3*i]) +'\t' + str(RC[3*i+1]) +'\t' +str(RC[3*i+2]) , file = file)  
+            print('', file = file)
+            print( str(a) + "_" + str(b) + '_C.wfn', file = file)
+            print('', file = file)
+            file.close()
+            
+            file = open(output + str(a) + "_" + str(b) +"_D.com", 'w')
+            print('%mem = 8GB', file = file)
+            print('%nproc = 8', file = file)
+            print('#' + base_method + ' density=current nosym output=wfn ', file = file)
+            print('', file = file)
+            print(str(a) + "_" + str(b) , file = file)
+            print('', file = file)
+            print(charge_mult, file = file)
+            for i in range(len(atoms)):
+                print(atoms[i] +'    ' +str(RD[3*i]) +'\t' + str(RD[3*i+1]) +'\t' +str(RD[3*i+2]) , file = file)  
+            print('', file = file)
+            print(str(a) + "_" + str(b) + '_D.wfn', file = file)
+            print('', file = file)
+            file.close()
+            
+            return None
 
-#    def first_derivative():
+        file = open(path + "EQ.com", 'w')
+        print('%mem = 8GB', file = file)
+        print('%nproc = 8', file = file)
+        print('#' + base_method + ' density=current nosym output=wfn', file = file)
+        print('', file = file)
+        print('equilibirum_geometry', file = file)
+        print('', file = file)
+        print(cls.charge_mult, file = file)
+        for i in range(len(cls.atoms)):
+            print(cls.atoms[i] +'    ' +str(cls.positions[i][0]) +'\t' +str(cls.positions[i][1]) +'\t ' +str(cls.positions[i][2]) , file = file)
+        print('', file = file)
+        print('EQ.wfn', file = file)
+        print('', file = file)
+        file.close()
 
-#    def second_derivative():
+        ### Gerar input fora da diagonal
+        for a in range(1, 3*len(cls.atoms), 1):
+            for b in range(0,  a, 1):
+                write_geo_ab(a, b, cls.atoms, cls.positions, sigma, base_method, path)
+                
+        for a in range(0, 3*len(cls.atoms), 1):
+            write_geo_aa(a, cls.atoms, cls.positions, sigma, base_method, path)
+               
+        return None
