@@ -3,7 +3,6 @@
 #import os
 import numpy as np
 
-
 class Molecule:
     """Defines the molecule class. It stores all the relevant data for the IQA/CCTDP analysis
     """
