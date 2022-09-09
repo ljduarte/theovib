@@ -107,13 +107,13 @@ def hessian_from_iqa(atoms, folder, delta=0.05):
     IQA_EQ = np.concatenate(get_IQA(folder + '/EQ_atomicfiles', atoms), axis=0)
     for i in range(0, 3*len(atoms)):  # loop over all XY files where X=Y
         IQA_A = np.concatenate(get_IQA(
-            folder + "/" + str(i) + str(i) + '_A_atomicfiles', atoms), axis=0)  # Point A
+            folder + "/" + str(i) + '_' + str(i) + '_A_atomicfiles', atoms), axis=0)  # Point A
         errors.append(get_energy_from_wfn(
-            folder + "/" + str(i) + str(i) + '_A.wfn') - IQA_A.sum())
+            folder + "/" + str(i) + '_' + str(i) + '_A.wfn') - IQA_A.sum())
         IQA_B = np.concatenate(get_IQA(
-            folder + "/" + str(i) + str(i) + '_B_atomicfiles', atoms), axis=0)  # Ponit B
+            folder + "/" + str(i) + '_' + str(i) + '_B_atomicfiles', atoms), axis=0)  # Ponit B
         errors.append(get_energy_from_wfn(
-            folder + "/" + str(i) + str(i) + '_B.wfn') - IQA_B.sum())
+            folder + "/" + str(i) + '_' + str(i) + '_B.wfn') - IQA_B.sum())
         derivative = (IQA_A - 2*IQA_EQ + IQA_B) / \
             (delta**2)  # Calculate the derivative
         for j in range(len(derivative)):  # loop over the IQA contributions derivatives
@@ -124,21 +124,21 @@ def hessian_from_iqa(atoms, folder, delta=0.05):
     for i in range(0, 3*len(atoms)):  # loop over all XY files where X!=Y
         for j in range(0, i):
             IQA_A = np.concatenate(get_IQA(
-                folder + "/" + str(i) + str(j) + '_A_atomicfiles', atoms), axis=0)  # Point A
+                folder + "/" + str(i) + '_' + str(j) + '_A_atomicfiles', atoms), axis=0)  # Point A
             errors.append(get_energy_from_wfn(
-                folder + "/" + str(i) + str(j) + '_A.wfn') - IQA_A.sum())
+                folder + "/" + str(i) + '_' + str(j) + '_A.wfn') - IQA_A.sum())
             IQA_B = np.concatenate(get_IQA(
-                folder + "/" + str(i) + str(j) + '_B_atomicfiles', atoms), axis=0)  # Point B
+                folder + "/" + str(i) + '_' + str(j) + '_B_atomicfiles', atoms), axis=0)  # Point B
             errors.append(get_energy_from_wfn(
-                folder + "/" + str(i) + str(j) + '_B.wfn') - IQA_B.sum())
+                folder + "/" + str(i) + '_' + str(j) + '_B.wfn') - IQA_B.sum())
             IQA_C = np.concatenate(get_IQA(
-                folder + "/" + str(i) + str(j) + '_C_atomicfiles', atoms), axis=0)  # Point C
+                folder + "/" + str(i) + '_' + str(j) + '_C_atomicfiles', atoms), axis=0)  # Point C
             errors.append(get_energy_from_wfn(
-                folder + "/" + str(i) + str(j) + '_C.wfn') - IQA_C.sum())
+                folder + "/" + str(i) + '_' + str(j) + '_C.wfn') - IQA_C.sum())
             IQA_D = np.concatenate(get_IQA(
-                folder + "/" + str(i) + str(j) + '_D_atomicfiles', atoms), axis=0)  # Point D
+                folder + "/" + str(i) + '_' + str(j) + '_D_atomicfiles', atoms), axis=0)  # Point D
             errors.append(get_energy_from_wfn(
-                folder + "/" + str(i) + str(j) + '_D.wfn') - IQA_D.sum())
+                folder + "/" + str(i) + '_' + str(j) + '_D.wfn') - IQA_D.sum())
             derivative = (IQA_A - IQA_B - IQA_C + IQA_D)/(4*delta*delta)
             # Put elements at correct position and layer, converting to the Hartree/Bohr unit.
             for l in range(len(derivative)):

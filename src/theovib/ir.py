@@ -112,9 +112,9 @@ def intensities(atoms, coords, normal_coordinates, folder, delta):
     for i in range(len(3*atoms)):
         for j in range(len(atoms)):
             Electronic_A = array(get_electronic(
-                folder + "/" + str(i) + str(i) + '_A_atomicfiles/' + int_files[j]))  # Point A
+                folder + "/" + str(i) + '_' + str(i) + '_A_atomicfiles/' + int_files[j]))  # Point A
             Electronic_B = array(get_electronic(
-                folder + "/" + str(i) + str(i) + '_B_atomicfiles/' + int_files[j]))  # Ponit B
+                folder + "/" + str(i) + '_' +  str(i) + '_B_atomicfiles/' + int_files[j]))  # Ponit B
             derivative = (Electronic_A - Electronic_B)/(2*delta)
             C_prime[3*j:3*(j+1), i] = derivative[0]
             DP[3*int(i/3), i] = DP[3*int(i/3), i] + derivative[1]*0.529177
