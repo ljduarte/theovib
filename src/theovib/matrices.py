@@ -23,7 +23,6 @@ def vector_to_square(vector):
         a = np.concatenate([a, vector], axis=1)
     return a
 
-
 def gen_A_matrix(n):
     """Generates the transformation matrix A
 
@@ -87,11 +86,9 @@ def invert_B(B, M):
     while any(rho <= 1e-5 for rho in RHO):
         for i in range(len(RHO)):
             if RHO[i] <= 1e-5:
-                print(RHO[i])
                 RHO = np.delete(RHO, i)
                 D = np.delete(D, i, 1)
                 break
-    print(len(RHO))
 
     RHO = np.diag(RHO)
     #G_inv =  D*RHO*D_t
