@@ -136,12 +136,14 @@ def intensities(atoms, coords, normal_coordinates, folder, delta):
     CT = matmul(XA, C_prime)*gen_block_identity(len(atoms))
 
     Atom_tensor = C + CT + DP  # calculate the atomic tensors matrix: C + CT + DP
+    D = gen_D_matrix(len(atoms))
     intensities = []  # initialize vector to store the intensities
 
     # obtain intensities by multiplying the atomic tensors matrix by the normal coordinates and summing all elements
     for coordinate in normal_coordinates:
         # calculate infrared intensities
+        PQ=matmul(D, matmul(Atom_tensor, coordinate))
         intensities.append(
-            constants['k_int']*(matmul(Atom_tensor, coordinate).sum())**2)
+            constants['k_int']*matmul(transpose(PQ), PQ))
 
     return intensities, C, CT, DP

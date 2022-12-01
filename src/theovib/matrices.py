@@ -42,6 +42,21 @@ def gen_A_matrix(n):
         c = np.concatenate([c, b], axis=1)
     return c
 
+def gen_D_matrix(n):
+    """Generates the transformation matrix D
+
+    Args:
+        n (int): number of atoms
+
+    Returns:
+        array: transformation matrix
+    """
+    a = np.identity(3)
+    c = np.identity(3)
+    for i in range(1, n):
+        c = np.concatenate([c, a], axis=1)
+    
+    return c
 
 def gen_block_identity(n):
     """Generates a block indentity matrix
