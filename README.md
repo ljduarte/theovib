@@ -4,7 +4,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/ljduarte/theovib)](https://github.com/ljduarte/theovib/stargazers)
 [![GitHub license](https://img.shields.io/github/license/ljduarte/theovib)](https://github.com/ljduarte/theovib/blob/main/LICENSE)
 
-:construction: Version 0.0.3 :construction:
+:construction: Version 0.0.5 :construction:
 
 A package for molecular vibrations analysis. This initial version contains functions to solve the vibrational problem starting from the Hessian matrix or from a 3D-Hessian construct from Interacting Quantum Atoms energy decomposition scheme. 
 Infrared intensities are obtained from atomic charges and dipoles obtained by AIMAll.   

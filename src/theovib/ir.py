@@ -73,7 +73,7 @@ def normal_modes(atoms, H_iqa):
             frequencies_iqa.append(Lambda_iqa[i, i, :])
         if  Lambda[i][i] < 0:  # treshold for rotational and translational normal modes
             frequencies.append(
-                (constants['k_cm']*Lambda[i][i]/constants['k_pi'])**0.5)
+                -(-constants['k_cm']*Lambda[i][i]/constants['k_pi'])**0.5)
             normal_coordinates.append(L_mw[:, i])
             frequencies_iqa.append(Lambda_iqa[i, i, :])
         
